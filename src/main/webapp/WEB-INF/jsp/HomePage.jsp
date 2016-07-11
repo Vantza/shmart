@@ -14,6 +14,7 @@
 	</head>
 	<body>
 	ShangHaiMart INVOICE_VAT_EXP
+	<%=request.getAttribute("invoice").toString() %>
 
 	</body>
 </html>
