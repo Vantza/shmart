@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
   
 import com.alibaba.fastjson.JSON;
 import com.cary.cwish.pojo.Invoice;
-import com.cary.cwish.pojo.User;
 import com.cary.cwish.service.InvoiceService;
 import com.cary.cwish.service.UserService;  
   
