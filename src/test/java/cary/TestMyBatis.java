@@ -1,5 +1,7 @@
 package cary;
 
+import java.util.List;
+
 import javax.annotation.Resource;  
 
 import org.apache.log4j.Logger;  
@@ -41,4 +43,17 @@ public class TestMyBatis {
     	logger.info(JSON.toJSONString(i));
     }
     
+    @Test
+    public void testGetHundredRecords() throws Exception {
+    	logger.info("get in testGetHundredRecords");
+    	List<Invoice> is = invoiceService.getHundredRecords(0);
+    	logger.info(is.size());
+    }
+    
+    @Test
+    public void testGetCountRecords() throws Exception {
+    	logger.info("get in testGetCountRecords");
+    	int a = invoiceService.getCountOfInvoiceGroup();
+    	logger.info(a);
+    }
 }  

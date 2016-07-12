@@ -1,5 +1,9 @@
 package com.cary.cwish.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.cary.cwish.pojo.Invoice;
 
 public interface InvoiceDao {
@@ -50,4 +54,14 @@ public interface InvoiceDao {
      * @mbggenerated
      */
     int updateByPrimaryKey(Invoice record);
+    
+    /**
+     * This method is used to get a number of records of INVOICE_VAT_EXP
+     */
+    List<Invoice> selectHundredRecords(@Param("startNum")Integer startNum);
+    
+    /**
+     * This method is to get count of whole group
+     */
+    int selectCountRecords();
 }

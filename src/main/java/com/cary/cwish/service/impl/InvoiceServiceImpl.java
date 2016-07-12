@@ -1,5 +1,7 @@
 package com.cary.cwish.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +18,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public Invoice getInvoiceByID(int id) throws Exception {
 		return invoiceDao.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<Invoice> getHundredRecords(int startNum) throws Exception {
+		return invoiceDao.selectHundredRecords(startNum);
+	}
+
+	@Override
+	public int getCountOfInvoiceGroup() throws Exception {
+		return invoiceDao.selectCountRecords();
 	}
 
 }

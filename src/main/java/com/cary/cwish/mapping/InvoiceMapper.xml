@@ -409,4 +409,26 @@
       Tax_DiscountAmt = #{taxDiscountamt,jdbcType=NUMERIC}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectHundredRecords" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT *
+	FROM INVOICE_VAT_EXP
+	WHERE Invoice_Sequence in (
+		SELECT a.Invoice_sequence
+		FROM (
+			select * from INVOICE_VAT_EXP where id in (
+				select max(ID) from INVOICE_VAT_EXP
+				GROUP BY Invoice_Sequence
+			)
+		) a
+		ORDER BY a.ID
+		OFFSET #{startNum, jdbcType=INTEGER} ROWS
+		FETCH NEXT 100 ROWS ONLY
+	)
+  </select>
+  <select id="selectCountRecords" resultType="java.lang.Integer" >
+    SELECT count(*) FROM INVOICE_VAT_EXP WHERE id in (
+		SELECT max(ID) FROM INVOICE_VAT_EXP
+		GROUP BY Invoice_Sequence
+	)
+  </select>
 </mapper>
