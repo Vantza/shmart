@@ -46,14 +46,14 @@ public class TestMyBatis {
     @Test
     public void testGetHundredRecords() throws Exception {
     	logger.info("get in testGetHundredRecords");
-    	List<Invoice> is = invoiceService.getHundredRecords(0);
+    	List<Invoice> is = invoiceService.getHundredRecords(0, 2007037);
     	logger.info(is.size());
     }
     
     @Test
     public void testGetCountRecords() throws Exception {
     	logger.info("get in testGetCountRecords");
-    	int a = invoiceService.getCountOfInvoiceGroup();
+    	int a = invoiceService.getCountOfInvoiceGroup(2007037);
     	logger.info(a);
     }
 }  

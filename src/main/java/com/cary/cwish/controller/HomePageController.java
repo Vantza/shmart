@@ -33,18 +33,32 @@ public class HomePageController {
 	
 	@RequestMapping(value="/getRecords")
 	public void getRecordExcel(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		res.setCharacterEncoding("UTF-8");
 		JSONObject jsonObject;
 		String fileName = null;
-		int totalCount = invoiceService.getCountOfInvoiceGroup();
-		for (int i=0; i<totalCount/100+1; i++) {
-			List<Invoice> ins = invoiceService.getHundredRecords(i*100);
-			fileName = "E://Cary/test" + i + ".xls";
-			ExcelOperation.writeInvoicesToExcel(fileName, ins);
-		}
+		String requiredId = req.getParameter("requiredId").trim();
+		String reg="^\\d+$";
 		
-		res.setCharacterEncoding("UTF-8");
-		jsonObject = new JSONObject();
-		jsonObject.put("success", "导出工作已经完成！！！");
-		res.getWriter().write(jsonObject.toString());
+		if (requiredId=="") {
+			jsonObject = new JSONObject();
+			jsonObject.put("failed", "requiredId不能为空！！");
+			res.getWriter().write(jsonObject.toString());
+		} else if (requiredId.matches(reg)) {
+			int reqId = Integer.parseInt(requiredId);
+			int totalCount = invoiceService.getCountOfInvoiceGroup(reqId);
+			for (int i=0; i<totalCount/100+1; i++) {
+				List<Invoice> ins = invoiceService.getHundredRecords(i*100, reqId);
+				fileName = "E://Cary/test" + i + ".xls";
+				ExcelOperation.writeInvoicesToExcel(fileName, ins);
+			}
+			
+			jsonObject = new JSONObject();
+			jsonObject.put("success", "导出工作已经完成！！！");
+			res.getWriter().write(jsonObject.toString());
+		} else {
+			jsonObject = new JSONObject();
+			jsonObject.put("failed", "非法的requiredId！！！");
+			res.getWriter().write(jsonObject.toString());
+		}
 	}
 }

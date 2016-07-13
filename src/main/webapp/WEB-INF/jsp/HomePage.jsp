@@ -18,7 +18,7 @@
 		<form role="form">
 		   	<div class="col-lg-6">
             	<div class="input-group">
-               		<input type="text" class="form-control">
+               		<input type="text" class="form-control requiredId" placeholder="RequiredId..." required="">
                		<span class="input-group-btn">
 	                  	<button class="btn btn-default" type="button" onclick='printExcel()'>
 	                    	 导出到Excel!

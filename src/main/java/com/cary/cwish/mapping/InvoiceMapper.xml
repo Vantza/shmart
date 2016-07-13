@@ -409,7 +409,7 @@
       Tax_DiscountAmt = #{taxDiscountamt,jdbcType=NUMERIC}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectHundredRecords" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectHundredRecords" resultMap="BaseResultMap" >
     SELECT *
 	FROM INVOICE_VAT_EXP
 	WHERE Invoice_Sequence in (
@@ -419,6 +419,7 @@
 				select max(ID) from INVOICE_VAT_EXP
 				GROUP BY Invoice_Sequence
 			)
+			and Request_ID = #{requiredId, jdbcType=INTEGER}
 		) a
 		ORDER BY a.ID
 		OFFSET #{startNum, jdbcType=INTEGER} ROWS
@@ -430,5 +431,6 @@
 		SELECT max(ID) FROM INVOICE_VAT_EXP
 		GROUP BY Invoice_Sequence
 	)
+	AND Request_ID = #{requiredId, jdbcType=INTEGER}
   </select>
 </mapper>

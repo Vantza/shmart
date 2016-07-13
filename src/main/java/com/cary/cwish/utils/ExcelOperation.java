@@ -127,10 +127,8 @@ public class ExcelOperation {
 			row.createCell(40).setCellValue("");
 			row.createCell(41).setCellValue("");
 		}
-		logger.info(workbook.getActiveSheetIndex());
 		FileOutputStream fos = new FileOutputStream(fileName);
         workbook.write(fos);
-        logger.info(workbook.toString());
         fos.close();
         System.out.println(fileName + " written successfully");
 	}

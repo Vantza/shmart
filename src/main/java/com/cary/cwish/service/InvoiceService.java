@@ -7,7 +7,7 @@ import com.cary.cwish.pojo.Invoice;
 public interface InvoiceService {
 	public Invoice getInvoiceByID(int id) throws Exception;
 	
-	public List<Invoice> getHundredRecords(int startNum) throws Exception;
+	public List<Invoice> getHundredRecords(int startNum, int requiredId) throws Exception;
 	
-	public int getCountOfInvoiceGroup() throws Exception;
+	public int getCountOfInvoiceGroup(int requiredId) throws Exception;
 }

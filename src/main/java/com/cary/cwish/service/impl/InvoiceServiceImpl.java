@@ -21,13 +21,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public List<Invoice> getHundredRecords(int startNum) throws Exception {
-		return invoiceDao.selectHundredRecords(startNum);
+	public List<Invoice> getHundredRecords(int startNum, int requiredId) throws Exception {
+		return invoiceDao.selectHundredRecords(startNum, requiredId);
 	}
 
 	@Override
-	public int getCountOfInvoiceGroup() throws Exception {
-		return invoiceDao.selectCountRecords();
+	public int getCountOfInvoiceGroup(int requiredId) throws Exception {
+		return invoiceDao.selectCountRecords(requiredId);
 	}
 
 }
