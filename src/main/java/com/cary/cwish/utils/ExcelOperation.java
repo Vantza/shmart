@@ -1,6 +1,8 @@
 package com.cary.cwish.utils;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +17,12 @@ import com.cary.cwish.pojo.Invoice;
 public class ExcelOperation {
 	private static Logger logger = Logger.getLogger(ExcelOperation.class);
 	
+	/**
+	 * build excel files
+	 * @param fileName
+	 * @param invoices
+	 * @throws Exception
+	 */
 	public static void writeInvoicesToExcel(String fileName, List<Invoice> invoices) throws Exception {
 		Workbook workbook = null;
 		logger.info("Invoices size : " + invoices.size());
@@ -131,5 +139,27 @@ public class ExcelOperation {
         workbook.write(fos);
         fos.close();
         System.out.println(fileName + " written successfully");
+	}
+
+	/**
+	 * list files by end of file names
+	 * @param time
+	 * @throws Exception
+	 */
+	public static List<String> listTimeExcelNames(long time) throws Exception {
+		String path = WishConstant.DOWNLOAD_DIRECTORY;
+		File file = new File(path);
+		File[] tempList = file.listFiles();
+		List<String> fileName = new ArrayList<String>();
+		String ends = time + ".xls";
+		
+		for (int i=0; i<tempList.length; i++) {
+			if (tempList[i].isFile()) {
+				if (tempList[i].getName().endsWith(ends)) {
+					fileName.add(tempList[i].getName());
+				}
+			}
+		}
+		return fileName;
 	}
 }

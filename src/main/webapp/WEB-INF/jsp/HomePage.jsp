@@ -7,18 +7,18 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>INVOICE_VAT_EXP</title>
 		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-	   	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../JS/PrintExcel.js"></script>
 	</head>
 	<body>
-	ShangHaiMart INVOICE_VAT_EXP
-	<%=request.getAttribute("invoice").toString() %>
+	<div class="row"></div>
 	<div class="container-fluid col-md-8 col-md-offset-2">
 		<form role="form">
 		   	<div class="col-lg-6">
+		   		<label>请输入请求编号： </label>
             	<div class="input-group">
-               		<input type="text" class="form-control requiredId" placeholder="RequiredId..." required="">
+               		<input type="text" class="form-control requiredId" placeholder="Input RequiredId...">
                		<span class="input-group-btn">
 	                  	<button class="btn btn-default" type="button" onclick='printExcel()'>
 	                    	 导出到Excel!
@@ -28,6 +28,10 @@
          	</div><!-- /.col-lg-6 -->
 		</form>
 	</div>
+	<br/>
+	<div class="container-fluid col-md-8 col-md-offset-2 fileInfo"></div>
+	<br/>
+	<div class="container-fluid col-md-8 col-md-offset-2 downloadList"></div>
 
 	</body>
 </html>

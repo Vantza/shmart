@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,8 @@ public class HomePageController {
 	@Resource
 	InvoiceService invoiceService;
 	
+	private static Logger logger = Logger.getLogger(HomePageController.class);
+	
 	@RequestMapping(value= "/")
 	public ModelAndView getHomePage(HttpServletRequest request, Model model) throws Exception{
 		ModelAndView mav = new ModelAndView(WishConstant.HOME_PAGE);
@@ -38,6 +41,10 @@ public class HomePageController {
 		String fileName = null;
 		String requiredId = req.getParameter("requiredId").trim();
 		String reg="^\\d+$";
+		long time = System.currentTimeMillis();
+		List<String> excel;
+		
+		logger.info(time);
 		
 		if (requiredId=="") {
 			jsonObject = new JSONObject();
@@ -48,11 +55,15 @@ public class HomePageController {
 			int totalCount = invoiceService.getCountOfInvoiceGroup(reqId);
 			for (int i=0; i<totalCount/100+1; i++) {
 				List<Invoice> ins = invoiceService.getHundredRecords(i*100, reqId);
-				fileName = "E://Cary/test" + i + ".xls";
+				fileName = WishConstant.DOWNLOAD_DIRECTORY + "Invoice_" + reqId + "_" + i + "_" + time + ".xls";
 				ExcelOperation.writeInvoicesToExcel(fileName, ins);
 			}
 			
+			// Here is to return a list of file name for user to download
+			excel = ExcelOperation.listTimeExcelNames(time);
+			
 			jsonObject = new JSONObject();
+			jsonObject.put("excelName", excel);
 			jsonObject.put("success", "导出工作已经完成！！！");
 			res.getWriter().write(jsonObject.toString());
 		} else {
@@ -60,5 +71,23 @@ public class HomePageController {
 			jsonObject.put("failed", "非法的requiredId！！！");
 			res.getWriter().write(jsonObject.toString());
 		}
+	}
+	
+	@RequestMapping(value="/getFileInfo")
+	public void getFileInfo(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		res.setCharacterEncoding("UTF-8");
+		JSONObject jsonObject = new JSONObject();
+		String requiredId = req.getParameter("requiredId").trim();
+		int reqId = Integer.parseInt(requiredId);
+		int totalCount = invoiceService.getCountOfInvoiceGroup(reqId);
+		if (totalCount == 0) {
+			jsonObject.put("info", "该请求编号没有获取到数据，请确认请求编号");
+		} else {
+			double fileCount = Math.ceil(totalCount/100.0);
+			logger.info(fileCount);
+			logger.info(totalCount);
+			jsonObject.put("info", "共有" + fileCount + "个文件可以下载！请耐心等待！");
+		}
+		res.getWriter().write(jsonObject.toString());
 	}
 }
