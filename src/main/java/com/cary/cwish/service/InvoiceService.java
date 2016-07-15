@@ -10,4 +10,6 @@ public interface InvoiceService {
 	public List<Invoice> getHundredRecords(int startNum, int requiredId) throws Exception;
 	
 	public int getCountOfInvoiceGroup(int requiredId) throws Exception;
+	
+	public List<Invoice> getRecordsByRequiredId(int requiredId) throws Exception;
 }

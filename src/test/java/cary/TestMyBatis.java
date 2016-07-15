@@ -56,4 +56,11 @@ public class TestMyBatis {
     	int a = invoiceService.getCountOfInvoiceGroup(2007037);
     	logger.info(a);
     }
+    
+    @Test
+    public void testGetRecordsByRequiredId() throws Exception {
+    	logger.info("get in testGetRecordsByRequiredId");
+    	List<Invoice> is = invoiceService.getRecordsByRequiredId(2007037);
+    	logger.info(is.size());
+    }
 }  

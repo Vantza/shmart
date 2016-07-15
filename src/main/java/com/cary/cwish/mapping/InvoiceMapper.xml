@@ -433,4 +433,9 @@
 	)
 	AND Request_ID = #{requiredId, jdbcType=INTEGER}
   </select>
+  <select id="selectRecordsByRequiredId" resultMap="BaseResultMap" >
+    SELECT *
+	FROM INVOICE_VAT_EXP
+	WHERE Request_ID = #{requiredId, jdbcType=INTEGER}
+  </select>
 </mapper>

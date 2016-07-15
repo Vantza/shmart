@@ -64,4 +64,9 @@ public interface InvoiceDao {
      * This method is to get count of whole group
      */
     int selectCountRecords(@Param("requiredId")Integer requiredId);
+    
+    /**
+     * This method is to get list invoices by request id
+     */
+    List<Invoice> selectRecordsByRequiredId(@Param("requiredId")Integer requiredId);
 }

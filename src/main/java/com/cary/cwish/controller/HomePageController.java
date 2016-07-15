@@ -1,5 +1,6 @@
 package com.cary.cwish.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -43,6 +44,7 @@ public class HomePageController {
 		String reg="^\\d+$";
 		long time = System.currentTimeMillis();
 		List<String> excel;
+		List<List<Invoice>> insList = new ArrayList<List<Invoice>>();
 		
 		logger.info(time);
 		
@@ -55,6 +57,7 @@ public class HomePageController {
 			int totalCount = invoiceService.getCountOfInvoiceGroup(reqId);
 			for (int i=0; i<totalCount/100+1; i++) {
 				List<Invoice> ins = invoiceService.getHundredRecords(i*100, reqId);
+				insList.add(ins);
 				fileName = WishConstant.DOWNLOAD_DIRECTORY + "Invoice_" + reqId + "_" + i + "_" + time + ".xls";
 				ExcelOperation.writeInvoicesToExcel(fileName, ins);
 			}
@@ -64,6 +67,7 @@ public class HomePageController {
 			
 			jsonObject = new JSONObject();
 			jsonObject.put("excelName", excel);
+			jsonObject.put("invoices", insList);
 			jsonObject.put("success", "导出工作已经完成！！！");
 			res.getWriter().write(jsonObject.toString());
 		} else {
@@ -88,6 +92,18 @@ public class HomePageController {
 			logger.info(totalCount);
 			jsonObject.put("info", "共有" + fileCount + "个文件可以下载！请耐心等待！");
 		}
+		res.getWriter().write(jsonObject.toString());
+	}
+	
+	@RequestMapping(value="/listRecords")
+	public void getlistRecords(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		res.setCharacterEncoding("UTF-8");
+		JSONObject jsonObject = new JSONObject();
+		String requiredId = req.getParameter("requiredId").trim();
+		int reqId = Integer.parseInt(requiredId);
+		
+		List<Invoice> ins = invoiceService.getRecordsByRequiredId(reqId);
+		jsonObject.put("invoices", ins);
 		res.getWriter().write(jsonObject.toString());
 	}
 }

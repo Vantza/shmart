@@ -30,4 +30,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoiceDao.selectCountRecords(requiredId);
 	}
 
+	@Override
+	public List<Invoice> getRecordsByRequiredId(int requiredId) throws Exception {
+		return invoiceDao.selectRecordsByRequiredId(requiredId);
+	}
+
 }
