@@ -46,7 +46,7 @@ public class TestMyBatis {
     @Test
     public void testGetHundredRecords() throws Exception {
     	logger.info("get in testGetHundredRecords");
-    	List<Invoice> is = invoiceService.getHundredRecords(0, 2007037);
+    	List<Invoice> is = invoiceService.getHundredRecords(0, 100, 2007037);
     	logger.info(is.size());
     }
     

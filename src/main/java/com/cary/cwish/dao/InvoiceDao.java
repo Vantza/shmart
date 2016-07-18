@@ -58,7 +58,7 @@ public interface InvoiceDao {
     /**
      * This method is used to get a number of records of INVOICE_VAT_EXP
      */
-    List<Invoice> selectHundredRecords(@Param("startNum")Integer startNum, @Param("requiredId")Integer requiredId);
+    List<Invoice> selectHundredRecords(@Param("startNum")Integer startNum, @Param("endNum")Integer endNum, @Param("requiredId")Integer requiredId);
     
     /**
      * This method is to get count of whole group

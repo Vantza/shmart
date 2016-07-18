@@ -21,8 +21,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public List<Invoice> getHundredRecords(int startNum, int requiredId) throws Exception {
-		return invoiceDao.selectHundredRecords(startNum, requiredId);
+	public List<Invoice> getHundredRecords(int startNum, int endNum, int requiredId) throws Exception {
+		return invoiceDao.selectHundredRecords(startNum, endNum, requiredId);
 	}
 
 	@Override

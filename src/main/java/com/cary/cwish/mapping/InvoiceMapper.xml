@@ -410,20 +410,19 @@
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectHundredRecords" resultMap="BaseResultMap" >
-    SELECT *
-	FROM INVOICE_VAT_EXP
-	WHERE Invoice_Sequence in (
-		SELECT a.Invoice_sequence
-		FROM (
-			select * from INVOICE_VAT_EXP where id in (
-				select max(ID) from INVOICE_VAT_EXP
-				GROUP BY Invoice_Sequence
-			)
-			and Request_ID = #{requiredId, jdbcType=INTEGER}
-		) a
-		ORDER BY a.ID
-		OFFSET #{startNum, jdbcType=INTEGER} ROWS
-		FETCH NEXT 100 ROWS ONLY
+	select * from INVOICE_VAT_EXP
+	where Invoice_Sequence in  (
+		select Invoice_Sequence from (
+			select row_number() over(order by ID) as row_number,* 
+			from (
+				select * from INVOICE_VAT_EXP where id in (
+					select max(ID) from INVOICE_VAT_EXP
+					GROUP BY Invoice_Sequence
+				)
+				and Request_ID = #{requiredId, jdbcType=INTEGER}
+			) as a
+		) as b
+		where b.row_number between #{startNum, jdbcType=INTEGER} and #{endNum, jdbcType=INTEGER}
 	)
   </select>
   <select id="selectCountRecords" resultType="java.lang.Integer" >
