@@ -42,7 +42,6 @@
 	<br/>
 	<div class="container-fluid col-md-8 col-md-offset-2 downloadList"></div>
 	<div class="container-fluid col-md-8 col-md-offset-2"><p> </p><br/></div>
-	<div class="container-fluid col-md-8 col-md-offset-2"><p>点击以下列表显示表内容： </p></div>
 	<div class="container-fluid col-md-8 col-md-offset-2 showList"></div>
 	<div class="container-fluid col-md-10 col-md-offset-1 invoiceTable">
 		<table id="table"

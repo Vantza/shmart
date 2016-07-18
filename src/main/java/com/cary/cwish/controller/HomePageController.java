@@ -44,7 +44,7 @@ public class HomePageController {
 		String reg="^\\d+$";
 		long time = System.currentTimeMillis();
 		List<String> excel;
-		List<List<Invoice>> insList = new ArrayList<List<Invoice>>();
+		List<Invoice> insList = new ArrayList<Invoice>();
 		
 		logger.info(time);
 		
@@ -57,7 +57,7 @@ public class HomePageController {
 			int totalCount = invoiceService.getCountOfInvoiceGroup(reqId);
 			for (int i=0; i<totalCount/100+1; i++) {
 				List<Invoice> ins = invoiceService.getHundredRecords(i*100, reqId);
-				insList.add(ins);
+				insList.addAll(ins);
 				fileName = WishConstant.DOWNLOAD_DIRECTORY + "Invoice_" + reqId + "_" + i + "_" + time + ".xls";
 				ExcelOperation.writeInvoicesToExcel(fileName, ins);
 			}

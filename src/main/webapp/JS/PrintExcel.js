@@ -25,8 +25,7 @@ function getRecord() {
 			invoiceData = result.invoices;
 			alert(result.success);
 			buildDownloadList(result.excelName);
-			buildTableCatalog(result.excelName, result.invoices);
-			buildInvoiceTable(result.invoices);
+			buildInvoiceTable([result.invoices]);
 		},
 		error: function () {
             alert('Failed!! Please try again!!');
@@ -42,16 +41,6 @@ function buildDownloadList(excelName) {
 	});
 
 	$('.downloadList').html(outstr);
-}
-
-function buildTableCatalog(excelName, invoices) {
-	var outstr = "";
-
-	$.each(excelName, function (i, name)  {
-		outstr = outstr + "<a onclick='buildTablePre(" + i + ")'>" + name + " - 显示表" + "</a><br/>"
-	});
-
-	$('.showList').html(outstr);
 }
 
 function getFileInfo() {
