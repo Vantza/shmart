@@ -9,7 +9,7 @@
 		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="../CSS/bootstrap-table.min.css">
 		<link rel="stylesheet" href="../CSS/table.css">
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="http://libs.baidu.com/jquery/1.8.2/jquery.min.js"></script>
 	   	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../JS/PrintExcel.js"></script>
 		<script src="../JS/tableExport.js"></script>
