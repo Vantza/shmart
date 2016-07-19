@@ -35,6 +35,7 @@
     <result column="Tax_Amt" property="taxAmt" jdbcType="NUMERIC" />
     <result column="VatInclusive_DiscountAmt" property="vatinclusiveDiscountamt" jdbcType="NUMERIC" />
     <result column="Tax_DiscountAmt" property="taxDiscountamt" jdbcType="NUMERIC" />
+    <result column="unitprice" property="unitprice" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -46,7 +47,7 @@
     CommonInvoice_EquivalentCode, CommonInvoice_EquivalentNumber, Created_UserName, Checked_UserName, 
     Receipt_UserName, Sale_BankNum, Sale_AddressTele, Item_Number, Item_Name, Specification, 
     Uom_Code, Qty, VatInclusive_Amt, Tax_Percent, Tax_Amt, VatInclusive_DiscountAmt, 
-    Tax_DiscountAmt
+    Tax_DiscountAmt,unitprice
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     <!--

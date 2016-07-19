@@ -158,7 +158,7 @@ function buildTable(invoices, fileNo) {
 		field: 'Tax_DiscountAmt',
         title: '折扣税额'
 	}, {
-		field: 'data1',
+		field: 'unitprice',
         title: '单价'
 	}, {
 		field: 'data2',
@@ -233,7 +233,7 @@ function buildTable(invoices, fileNo) {
 		row['Tax_Amt'] = invoiceList[i].taxAmt;
 		row['VatInclusive_DiscountAmt'] = invoiceList[i].vatinclusiveDiscountamt;
 		row['Tax_DiscountAmt'] = invoiceList[i].taxDiscountamt;
-		row['data1'] = invoiceList[i].data1;
+		row['unitprice'] = invoiceList[i].unitprice;
 		row['data2'] = invoiceList[i].data2;
 		row['data3'] = invoiceList[i].data3;
 		row['data4'] = invoiceList[i].data4;

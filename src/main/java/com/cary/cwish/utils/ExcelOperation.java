@@ -119,7 +119,7 @@ public class ExcelOperation {
 			row.createCell(24).setCellValue(taxAmt);	// confusion
 			row.createCell(25).setCellValue(vatinclusiveDiscountamt);
 			row.createCell(26).setCellValue(taxDiscountamt);
-			row.createCell(27).setCellValue("");
+			row.createCell(27).setCellValue(i.getUnitprice());
 			row.createCell(28).setCellValue("");
 			row.createCell(29).setCellValue("");
 			row.createCell(30).setCellValue("");
