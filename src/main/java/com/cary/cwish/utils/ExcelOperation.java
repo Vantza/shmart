@@ -84,12 +84,12 @@ public class ExcelOperation {
 		int rowIndex = 1;
 		for (Invoice i : invoices) {
 			String customerName = i.getCustomerName() == null ? null : i.getCustomerName().toString();
-			double qty = i.getQty() == null ? 0 : i.getQty().doubleValue();
-			double vatinclusiveAmt = i.getVatinclusiveAmt()==null?0:i.getVatinclusiveAmt().doubleValue();
-			double taxPercent = i.getTaxPercent()==null?0:i.getTaxPercent().doubleValue();
-			double taxAmt = i.getTaxAmt()==null?0:i.getTaxAmt().doubleValue();
-			double vatinclusiveDiscountamt = i.getVatinclusiveDiscountamt()==null?0:i.getVatinclusiveDiscountamt().doubleValue();
-			double taxDiscountamt = i.getTaxDiscountamt()==null?0:i.getTaxDiscountamt().doubleValue();
+			String qty = i.getQty() == null ? "" : i.getQty().doubleValue()+"";
+			String vatinclusiveAmt = i.getVatinclusiveAmt()==null?"":i.getVatinclusiveAmt().doubleValue()+"";
+			String taxPercent = i.getTaxPercent()==null?"":i.getTaxPercent().doubleValue()+"";
+			String taxAmt = i.getTaxAmt()==null?"":i.getTaxAmt().doubleValue()+"";
+			String vatinclusiveDiscountamt = i.getVatinclusiveDiscountamt()==null?"":i.getVatinclusiveDiscountamt().doubleValue()+"";
+			String taxDiscountamt = i.getTaxDiscountamt()==null?"":i.getTaxDiscountamt().doubleValue()+"";
 			
 			Row row = sheet.createRow(rowIndex++);
 			row.createCell(0).setCellValue(i.getInvoiceType());
