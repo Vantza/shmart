@@ -16,6 +16,6 @@ public class HomeRedirectController {
 	@RequestMapping(value={"cary","index.jsp","/"})
 	public void index(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		logger.info("get in '/' and redirect to '/home'");
-		res.sendRedirect("/shmart/home/");
+		res.sendRedirect("/shmart/SHMail/");
 	}
 }
