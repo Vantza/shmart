@@ -2,6 +2,7 @@ package com.cary.cwish.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
 
 public class ExcelOperation {
@@ -162,4 +164,53 @@ public class ExcelOperation {
 		}
 		return fileName;
 	}
+	
+	
+	/**
+	 * write information of ContractProcess to excel file
+	 * @param fileName
+	 * @param cpps
+	 * @throws Exception
+	 */
+	public void writeListOfContractProcessToExcel(String fileName, List<ContractProcessPush> cpps) throws Exception {
+		Workbook workbook = null;
+		logger.info("Invoices size : " + cpps.size());
+		if (fileName.endsWith("xlsx")) {
+            workbook = new XSSFWorkbook();
+        } else if (fileName.endsWith("xls")) {
+            workbook = new HSSFWorkbook();
+        } else {
+            throw new Exception("invalid file name, should be xls or xlsx");
+        }
+		
+		Sheet sheet = workbook.createSheet("ContractProcess");
+		Row header = sheet.createRow(0);
+		header.createCell(0).setCellValue("科传系统待审批人");
+		header.createCell(1).setCellValue("创建人");
+		header.createCell(2).setCellValue("合同编号");
+		header.createCell(3).setCellValue("签约流程号");
+		header.createCell(4).setCellValue("审批状态");
+		header.createCell(5).setCellValue("租赁状态");
+		header.createCell(6).setCellValue("租约类型");
+		header.createCell(7).setCellValue("原系统租约生效日期");
+		
+		int rowIndex = 1;
+		for (ContractProcessPush cpp : cpps) {
+			Row row = sheet.createRow(rowIndex++);
+			row.createCell(0).setCellValue(cpp.getProcessPoint());
+			row.createCell(1).setCellValue(cpp.getCreator());
+			row.createCell(2).setCellValue(cpp.getLeaseNumber());
+			row.createCell(3).setCellValue(cpp.getBpmsn());
+			row.createCell(4).setCellValue(cpp.getProValue());	
+			row.createCell(5).setCellValue(cpp.getRentValue());
+			row.createCell(6).setCellValue(cpp.getRentType());
+			row.createCell(7).setCellValue(cpp.getAccepttime());
+		}
+		
+		FileOutputStream fos = new FileOutputStream(fileName);
+        workbook.write(fos);
+        fos.close();
+        logger.info(fileName + " written successfully");
+	}
+	
 }

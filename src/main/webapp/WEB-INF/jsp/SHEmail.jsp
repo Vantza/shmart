@@ -27,6 +27,7 @@
 				  <option value ="retireProcess">科传退租流程</option>
 				</select>
                	<button class="btn btn-default" type="button" onclick='showData()'>查询!</button>
+               	<button class="btn btn-primary" type="button" onclick=''>保存至本地!</button>
          	</div><!-- /.col-lg-6 -->
 		</form>
 	</div>
