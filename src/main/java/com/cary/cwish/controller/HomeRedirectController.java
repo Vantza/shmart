@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeRedirectController {
 	private static Logger logger = Logger.getLogger(HomeRedirectController.class);
 	
-	@RequestMapping(value={"cary","index.jsp","/"})
+	@RequestMapping(value={"/"})
 	public void index(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		logger.info("get in '/' and redirect to '/home'");
+		logger.info("get in '/' and redirect to '/SHMail'");
 		res.sendRedirect("/shmart/SHMail/");
 	}
 }

@@ -11,7 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;  
   
 import com.alibaba.fastjson.JSON;
+import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
+import com.cary.cwish.service.ContractProcessPushService;
 import com.cary.cwish.service.InvoiceService;
 import com.cary.cwish.service.UserService;  
   
@@ -26,6 +28,9 @@ public class TestMyBatis {
     @Resource
     private InvoiceService invoiceService = null;
     
+    @Resource
+    private ContractProcessPushService cpps = null;
+    
     
 //    @Test  
 //    public void testGetUserById() throws Exception {
@@ -36,7 +41,7 @@ public class TestMyBatis {
 //        logger.info(JSON.toJSONString(user));  
 //    }
     
-    @Test
+    /*@Test
     public void testGetInvoiceById() throws Exception {
     	logger.info("get in testGetInvoiceById");
     	Invoice i = invoiceService.getInvoiceByID(2);
@@ -62,5 +67,14 @@ public class TestMyBatis {
     	logger.info("get in testGetRecordsByRequiredId");
     	List<Invoice> is = invoiceService.getRecordsByRequiredId(2007037);
     	logger.info(is.size());
+    }*/
+    
+    @Test
+    public void testGetEmailInfo() throws Exception {
+    	logger.info("get in testGetEmailInfo");
+    	logger.info(System.getProperty("java.library.path"));
+    	List<ContractProcessPush> list = cpps.getContractProcessPushList();
+    	
+    	logger.info(list.get(0).getLeaseNumber());
     }
 }  

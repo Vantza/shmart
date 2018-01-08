@@ -14,6 +14,7 @@
 		<script src="../JS/jquery.base64.js"></script>
 		<script src="../JS/bootstrap-table.js"></script>
 		<script src="../JS/bootstrap-table-export.js"></script>
+		<script src="../JS/SHEmail.js"></script>
 	</head>
 	<body>
 	<div class="row"></div>
@@ -21,7 +22,7 @@
 		<form class="form-inline" role="form col-md-8">
 		   	<div class="form-group col-lg-6">
 		   		<label>流程类型：</label>
-              	<select class="form-control" style="width: auto;">
+              	<select id = "selectForm" class="form-control" style="width: auto;">
 				  <option value ="contractProcess">科传签约流程</option>
 				  <option value ="retireProcess">科传退租流程</option>
 				</select>
@@ -43,7 +44,12 @@
 	           data-show-refresh="false"
 	           data-show-toggle="true"
 	           data-pagination="true"
-	           data-height="800">
+	           data-height="750"
+	           data-striped="true"
+	           data-pagination="true"
+	           data-only-info-pagination="true"
+	           data-page-size="20"
+	           data-page-list=[20,30,50,ALL]>
 	        <thead>
 	        <tr>
 	            <th data-field="id" data-formatter="idFormatter">ID</th>

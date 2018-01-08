@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cary.cwish.dao.ContractProcessPushDao" >
+  <resultMap id="BaseResultMap" type="com.cary.cwish.pojo.ContractProcessPush" >
+    <result column="processPoint" property="processPoint" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="leaseNumber" property="leaseNumber" jdbcType="VARCHAR" />
+    <result column="bpmsn" property="bpmsn" jdbcType="VARCHAR" />
+    <result column="proValue" property="proValue" jdbcType="VARCHAR" />
+    <result column="rentValue" property="rentValue" jdbcType="VARCHAR" />
+    <result column="rentType" property="rentType" jdbcType="VARCHAR" />
+    <result column="accepttime" property="accepttime" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectContractProcessPush" resultMap="BaseResultMap" >
+	  <![CDATA[  
+	    	select distinct
+			--f.xf_status,
+				(case f.xf_status
+					when '24' then '法务部审批-张兴凤'
+					when '26' then '财务部审批-张冬梅'
+					when '2P' then '财务部审核保证金-刘英'
+					when '2S' then '租务经理审批-肖莉莉'
+					end) as processPoint,
+			staff.name as creator, 
+			a.leasenumber as leaseNumber, 
+			isnull(a.bpmsn,'') as bpmsn, 
+			b.value as proValue, 
+			d.value as rentValue, 
+			e.value as rentType,  
+			isnull(convert(varchar(10),a.accepttime,120),'') as accepttime    
+			from ERP.dbo.lease as a left join 
+			ERP.dbo.sysparameter as b on a.rowstatusguid=b.guid left join 
+			ERP.dbo.sysparameter as d on a.rentstatusguid=d.guid left join 
+			ERP.dbo.sysparameter as e on a.leasetypeguid=e.guid left join 
+			ERP.dbo.customer as r on a.customerguid=r.guid left join 
+			HR.dbo.Staff as staff on a.createby=staff.id left join
+			OPENQUERY(KECHUAN_PROD,'select xf_contractno leasenumber,xf_status from smsc_a.VIEW_CONTRACTMASTER') as f on a.leasenumber=f.leasenumber
+			where isnull(b.value,'nnn')<>'草稿'
+			and a.isdeleted=0 
+			and f.XF_STATUS in ('24','26','2P','2S')
+			and a.accepttime is not null
+	  ]]> 
+  </select>
+</mapper>
