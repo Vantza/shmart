@@ -3,6 +3,7 @@
 <mapper namespace="com.cary.cwish.dao.ContractProcessPushDao" >
   <resultMap id="BaseResultMap" type="com.cary.cwish.pojo.ContractProcessPush" >
     <result column="processPoint" property="processPoint" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="leaseNumber" property="leaseNumber" jdbcType="VARCHAR" />
     <result column="bpmsn" property="bpmsn" jdbcType="VARCHAR" />
@@ -21,6 +22,11 @@
 					when '2P' then '财务部审核保证金-刘英'
 					when '2S' then '租务经理审批-肖莉莉'
 					end) as processPoint,
+			(case f.xf_status
+				when '24' then 'xingfeng.zhang@shanghaimart.com'
+				when '26' then 'dongmei.zhang@shanghaimart.com'
+				when '2P' then 'emma.liu@shanghaimart.com'
+				when '2S' then 'joycexiao@shanghaimart.com' end) as email,
 			staff.name as creator, 
 			a.leasenumber as leaseNumber, 
 			isnull(a.bpmsn,'') as bpmsn, 

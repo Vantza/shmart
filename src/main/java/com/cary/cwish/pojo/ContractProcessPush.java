@@ -3,6 +3,8 @@ package com.cary.cwish.pojo;
 public class ContractProcessPush {
 	private String processPoint;
 	
+	private String email;
+	
 	private String creator;
 	
 	private String leaseNumber;
@@ -79,5 +81,13 @@ public class ContractProcessPush {
 
 	public void setAccepttime(String accepttime) {
 		this.accepttime = accepttime;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

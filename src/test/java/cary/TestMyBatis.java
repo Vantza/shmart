@@ -75,6 +75,6 @@ public class TestMyBatis {
     	logger.info(System.getProperty("java.library.path"));
     	List<ContractProcessPush> list = cpps.getContractProcessPushList();
     	
-    	logger.info(list.get(0).getLeaseNumber());
+    	logger.info(list.get(0).getEmail());
     }
 }  
