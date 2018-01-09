@@ -33,18 +33,22 @@ public class MailService {
 	
 	/**
 	 * 发送邮件
-	 * @param to
+	 * @param to 
+	 * 			String[] array = new String[]
+	 * 			{"sun111@163.com","sun222@sohu.com"};
+	 * @param cc
 	 * @param subject
 	 * @param html
 	 * @throws MessagingException
 	 * @throws UnsupportedEncodingException
 	 */
-	public static void sendHtmlMail(String to, String subject, String html) throws MessagingException,UnsupportedEncodingException {
+	public static void sendHtmlMail(String[] to, String[] cc, String subject, String html) throws MessagingException,UnsupportedEncodingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         // 设置utf-8或GBK编码，否则邮件会有乱码
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         messageHelper.setFrom(WishConstant.EMAILFORM, "系统名称");
         messageHelper.setTo(to);
+        messageHelper.setCc(cc);
         messageHelper.setSubject(subject);
         messageHelper.setText(html, true);
         mailSender.send(mimeMessage);

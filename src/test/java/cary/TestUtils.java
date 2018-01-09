@@ -36,6 +36,8 @@ public class TestUtils {
 	public void testMailService() throws Exception {
 		MailService.createMailSender();
 		logger.info("...");
-		MailService.sendHtmlMail("544082780@qq.com", "test email", "cycycycy");
+		String[] to = {"544082780@qq.com"};
+		String[] cc = {"cary.cao@shanghaimart.com"};
+		MailService.sendHtmlMail(to, cc, "test email", "cycycycy");
 	}
 }
