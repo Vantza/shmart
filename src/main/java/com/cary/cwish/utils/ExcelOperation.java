@@ -174,7 +174,7 @@ public class ExcelOperation {
 	 */
 	public void writeListOfContractProcessToExcel(String fileName, List<ContractProcessPush> cpps) throws Exception {
 		Workbook workbook = null;
-		logger.info("Invoices size : " + cpps.size());
+		logger.info("cpps' size : " + cpps.size());
 		if (fileName.endsWith("xlsx")) {
             workbook = new XSSFWorkbook();
         } else if (fileName.endsWith("xls")) {

@@ -8,4 +8,5 @@ public class WishConstant {
 	public static final String DOWNLOAD_DIRECTORY = "e:/Cary/MyWish/shmart/src/main/webapp/InvoiceExcel/";	//localhost
 	public static final String REIMBURSEMENT = "Reimbursement";
 	public static final String SHEMAIL = "SHEmail";
+	public static final String SAVE_FOLDER = "C:/Users/cary.cao/Desktop/testsave/";
 }

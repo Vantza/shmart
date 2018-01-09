@@ -78,3 +78,22 @@ function buildContractProcessPushTable(ContractProcessPushList) {
     });
 	
 }
+
+
+//保存选择的流程信息至EXCEL文件
+function saveData() {
+	var saveType = $('#selectForm')[0].value;
+	
+	$.ajax({
+		type: "GET",
+		url: "saveRecordsToExcel",
+		async: true,
+		data: {'saveType' : saveType},
+		success: function(result) {
+			result = eval('(' + result + ')');
+		},
+		error: function () {
+			alert('Save data failed!!')
+		}
+	});
+}
