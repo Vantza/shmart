@@ -9,4 +9,13 @@ public class WishConstant {
 	public static final String REIMBURSEMENT = "Reimbursement";
 	public static final String SHEMAIL = "SHEmail";
 	public static final String SAVE_FOLDER = "C:/Users/cary.cao/Desktop/testsave/";
+	
+	
+	
+	
+	public static final String HOST = "smtp.263.net";
+	public static final Integer PORT = 25;
+	public static final String USERNAME = "cary.cao@shanghaimart.com";
+	public static final String PASSWORD = "Cy123456";
+	public static final String EMAILFORM = "cary.cao@shanghaimart.com";
 }
