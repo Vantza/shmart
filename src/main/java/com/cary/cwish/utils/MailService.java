@@ -146,11 +146,24 @@ public class MailService {
 			diff = d2.getTime() - d1.getTime();     
 			days = diff / (1000 * 60 * 60 * 24);
 			
-			if (days > 7) {
-				accTime = "<td style='color: red'>";
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(d2);
+			
+			//排除双休日
+			if (calendar.DAY_OF_WEEK < 2) {
+				if (days > 10) {
+					accTime = "<td style='color: red'>";
+				} else {
+					accTime = "<td>";
+				}
 			} else {
-				accTime = "<td>";
+				if (days > 8) {
+					accTime = "<td style='color: red'>";
+				} else {
+					accTime = "<td>";
+				}
 			}
+			
 						
 			table = table + "<tr height='25'><td>" + cpp.getProcessPoint() + "</td>"
 					+ "<td>" + cpp.getCreator() + "</td>"
