@@ -97,3 +97,22 @@ function saveData() {
 		}
 	});
 }
+
+
+//发送提醒邮件给用户
+function sendReminderEmail() {
+	var saveType = $('#selectForm')[0].value;
+	
+	$.ajax({
+		type: "GET",
+		url: "sendReminderEmail",
+		async: true,
+		data: {'saveType' : saveType},
+		success: function(result) {
+			result = eval('(' + result + ')');
+		},
+		error: function () {
+			alert('Email sent failed!!')
+		}
+	});
+}

@@ -20,7 +20,7 @@
 	<div class="row"></div>
 	<div class="container-fluid col-md-8 col-md-offset-2">
 		<form class="form-inline" role="form col-md-8">
-		   	<div class="form-group col-lg-6">
+		   	<div class="form-group col-lg-8">
 		   		<label>流程类型：</label>
               	<select id = "selectForm" class="form-control" style="width: auto;">
 				  <option value ="contractProcess">科传签约流程</option>
@@ -28,6 +28,7 @@
 				</select>
                	<button class="btn btn-default" type="button" onclick='showData()'>查询!</button>
                	<button class="btn btn-primary" type="button" onclick='saveData()'>保存至本地!</button>
+               	<button class="btn btn-danger" type="button" onclick='sendReminderEmail()'>发送提醒邮件!</button>
          	</div><!-- /.col-lg-6 -->
 		</form>
 	</div>

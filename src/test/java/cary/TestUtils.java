@@ -1,5 +1,6 @@
 package cary;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -25,12 +26,12 @@ public class TestUtils {
 	@Resource
     private ContractProcessPushService cpps = null;
 	
-	@Test
-	public void testWriteListOfContractProcessToExcel() throws Exception {
-		ExcelOperation eo = new ExcelOperation();
-		List<ContractProcessPush> list = cpps.getContractProcessPushList();
-		eo.writeListOfContractProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", list);
-	}
+//	@Test
+//	public void testWriteListOfContractProcessToExcel() throws Exception {
+//		ExcelOperation eo = new ExcelOperation();
+//		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+//		eo.writeListOfContractProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", list);
+//	}
 	
 	@Test
 	public void testMailService() throws Exception {
@@ -38,6 +39,17 @@ public class TestUtils {
 		logger.info("...");
 		String[] to = {"544082780@qq.com"};
 		String[] cc = {"cary.cao@shanghaimart.com"};
-		MailService.sendHtmlMail(to, cc, "test email", "cycycycy");
+		File file = new File("C:/Users/cary.cao/Desktop/cycycy.xls");  
+		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+		String html = MailService.buildContractProcessPushHTML(list);
+        String fileNm = file.getName();
+		MailService.sendHtmlMail(to, cc, fileNm, file, "test email", html);
 	}
+	
+//	@Test
+//	public void testBuildContractProcessPushHTML() throws Exception {
+//		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+//		String html = MailService.buildContractProcessPushHTML(list);
+//		logger.info(html);
+//	}
 }

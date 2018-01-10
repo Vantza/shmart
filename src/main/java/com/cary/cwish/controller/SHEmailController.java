@@ -1,5 +1,6 @@
 package com.cary.cwish.controller;
 
+import java.io.File;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
 import com.cary.cwish.utils.ExcelOperation;
+import com.cary.cwish.utils.MailService;
 import com.cary.cwish.utils.WishConstant;
 import com.sun.org.apache.xpath.internal.operations.And;
 
@@ -74,6 +76,45 @@ public class SHEmailController {
 			cpps = ContractProcessPushService.getContractProcessPushList();
 			eo.writeListOfContractProcessToExcel(fileName, cpps);
 		}
+	}
+	
+	
+	@RequestMapping(value="/sendReminderEmail")
+	public void sendReminderEmail(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		logger.info("start to send mails");
+		//save data to excel for attachments of emails
+		res.setCharacterEncoding("UTF-8");
+		logger.info("SaveType is : " + req.getParameter("saveType"));
+		List<ContractProcessPush> cpps = new ArrayList<ContractProcessPush>();		
+		ExcelOperation eo = new ExcelOperation();
+		String fileName = null;
+		Date day=new Date();    
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
+		fileName = df.format(day);
+		logger.info("现在时间是 ： " +  df.format(day));
+		
+		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("contractProcess")) {
+			logger.info("start to save contract process info");			
+			
+			fileName = WishConstant.SAVE_FOLDER + "签约流程" + fileName + ".xls";
+			cpps = ContractProcessPushService.getContractProcessPushList();
+			eo.writeListOfContractProcessToExcel(fileName, cpps);
+			
+			//send emails 
+			MailService.createMailSender();
+			//String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps);
+			String[] to = {"cary.cao@shanghaimart.com"};
+			//String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			String[] cc = {"544082780@qq.com"};
+			File attachment = new File(fileName);
+			String attachFileName = attachment.getName();
+			String subject = "签约流程审批提醒 - 7个工作日     " + df.format(day);
+			String html = MailService.buildContractProcessPushHTML(cpps);
+			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
+		}
+		//save data to excel for attachments of emails
+		
+		
 		
 	}
 }
