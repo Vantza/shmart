@@ -19,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cary.cwish.pojo.ContractProcessPush;
+import com.cary.cwish.pojo.RetireProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
+import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.utils.ExcelOperation;
 import com.cary.cwish.utils.MailService;
 import com.cary.cwish.utils.WishConstant;
@@ -32,7 +34,11 @@ public class SHEmailController {
 	private static Logger logger = Logger.getLogger(SHEmailController.class);
 	
 	@Resource
-	ContractProcessPushService ContractProcessPushService;
+	ContractProcessPushService contractProcessPushService;
+	
+	@Resource
+	
+	RetireProcessPushService retireProcessPushService;
 	
 	@RequestMapping(value= "/")
 	public ModelAndView getReimbursementRecords(HttpServletRequest request) {
@@ -44,16 +50,24 @@ public class SHEmailController {
 	@RequestMapping(value="/listRecords")
 	public void getlistRecords(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		res.setCharacterEncoding("UTF-8");
-		List<ContractProcessPush> cpps = new ArrayList<ContractProcessPush>();
+		List<ContractProcessPush> cpps;
+		List<RetireProcessPush> rpps;
 		JSONObject jsonObject = new JSONObject();
 		
 		logger.info("SearchType is : " + req.getParameter("SearchType"));
 		
 		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("contractProcess")) {
-			logger.info("get into list contract records page ");
-			cpps = ContractProcessPushService.getContractProcessPushList();
+			logger.info("get into list contract process records page");
+			cpps = contractProcessPushService.getContractProcessPushList();
 			jsonObject.put("ContractProcessPushList", cpps);
-		}		
+		}
+		
+		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("retireProcess")){
+			logger.info("get into list retire process records page");
+			rpps = retireProcessPushService.getRetireProcessPushList();
+			jsonObject.put("RetireProcessPushList", rpps);
+		}
+		
 		res.getWriter().write(jsonObject.toString());
 	}
 	
@@ -73,7 +87,7 @@ public class SHEmailController {
 			logger.info("start to save contract process info");			
 			
 			fileName = WishConstant.SAVE_FOLDER + "签约流程" + fileName + ".xls";
-			cpps = ContractProcessPushService.getContractProcessPushList();
+			cpps = contractProcessPushService.getContractProcessPushList();
 			eo.writeListOfContractProcessToExcel(fileName, cpps);
 		}
 	}
@@ -97,7 +111,7 @@ public class SHEmailController {
 			logger.info("start to save contract process info");			
 			
 			fileName = WishConstant.SAVE_FOLDER + "签约流程" + fileName + ".xls";
-			cpps = ContractProcessPushService.getContractProcessPushList();
+			cpps = contractProcessPushService.getContractProcessPushList();
 			eo.writeListOfContractProcessToExcel(fileName, cpps);
 			
 			//send emails 

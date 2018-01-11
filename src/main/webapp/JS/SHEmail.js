@@ -14,9 +14,12 @@ function showData() {
 		success: function(result) {
 			result = eval('(' + result + ')');
 			//alert('success');
-			//alert(searchType);
+//			alert(searchType);
+//			alert(result);
 			if ($('#selectForm')[0].value == 'contractProcess') {
 				buildContractProcessPushTable(result.ContractProcessPushList);
+			} else if ($('#selectForm')[0].value == 'retireProcess') {
+				buildRetireProcessPushTable(result.RetireProcessPushList);
 			}
 			
 		},
@@ -78,6 +81,56 @@ function buildContractProcessPushTable(ContractProcessPushList) {
     });
 	
 }
+
+
+//构造退租流程审批列表
+function buildRetireProcessPushTable(RetireProcessPushList) {
+	var columns = [],
+	data = [],
+	row;
+	
+	columns.push({
+		field: 'processPoint',
+        title: '科传系统审批环节'
+	}, {
+		field: 'operator',
+        title: '审批环节操作人'
+	}, {
+		field: 'units',
+        title: '单元号'
+	}, {
+		field: 'leaseNumber',
+        title: '合同编号'
+	}, {
+		field: 'startRetireTime',
+        title: '退租创建日期'
+	}, {
+		field: 'originalStatus',
+        title: '原系统审批状态'
+	}, {
+		field: 'originalPassTime',
+        title: '原系统审批通过日期'
+	});
+	
+	for (var i=0; i<RetireProcessPushList.length; i++) {
+		row = {}
+		row['processPoint'] = RetireProcessPushList[i].processPoint;
+		row['operator'] = RetireProcessPushList[i].operator;
+		row['units'] = RetireProcessPushList[i].units;
+		row['leaseNumber'] = RetireProcessPushList[i].leaseNumber;
+		row['startRetireTime'] = RetireProcessPushList[i].startRetireTime;
+		row['originalStatus'] = RetireProcessPushList[i].originalStatus;
+		row['originalPassTime'] = RetireProcessPushList[i].originalPassTime;
+		data.push(row);
+	}
+
+	$('#table').bootstrapTable('destroy').bootstrapTable({
+        columns: columns,
+        data: data
+    });
+	
+}
+
 
 
 //保存选择的流程信息至EXCEL文件
