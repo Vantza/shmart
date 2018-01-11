@@ -75,10 +75,11 @@ public class MailService {
 	 */
 	public static String[] buildContractProcessPushEmailAddressOfTo(List<ContractProcessPush> cpps) {
 		int size = cpps.size();
-		String[] to = new String[size];
+		String[] to = new String[size+1];
 		for (int i=0; i<size; i++) {
 			to[i] = cpps.get(i).getEmail();
 		}
+		to[size] = "cary.cao@shanghaimart.com";
 		return to;
 	}
 	

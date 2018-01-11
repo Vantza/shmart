@@ -91,6 +91,7 @@ function saveData() {
 		data: {'saveType' : saveType},
 		success: function(result) {
 			result = eval('(' + result + ')');
+			alert('Save data successfully!!');
 		},
 		error: function () {
 			alert('Save data failed!!')
