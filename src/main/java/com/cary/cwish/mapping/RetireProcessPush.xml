@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cary.cwish.dao.RetireProcessPushDao" >
+  <resultMap id="BaseResultMap" type="com.cary.cwish.pojo.RetireProcessPush" >
+    <result column="processPoint" property="processPoint" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="units" property="units" jdbcType="VARCHAR" />
+    <result column="leaseNumber" property="leaseNumber" jdbcType="VARCHAR" />
+    <result column="startRetireTime" property="startRetireTime" jdbcType="VARCHAR" />
+    <result column="originalStatus" property="originalStatus" jdbcType="VARCHAR" />
+    <result column="originalPassTime" property="originalPassTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectAllRetireProcessPush" resultMap="BaseResultMap" >
+	  <![CDATA[  
+	    	select distinct 
+			(case e.xf_status
+				when '13' then '应收主管审批'
+				when '14' then '物业管理部办理退租'
+				when '16' then '工程维修部办理退租'
+				when '19' then '工程弱电部办理退租'
+				when '18' then '客户服务部办理退租'
+				when '1A' then '财务部应收清算'
+				end) as processPoint,
+			(case e.xf_status
+				when '13' then 'dongmei.zhang@shanghaimart.com'
+				when '14' then 'chunlan.ji@shanghaimart.com'
+				when '16' then '工程维修部办理退租'
+				when '19' then '工程弱电部办理退租'
+				when '18' then 'zhuangye@shanghaimart.com'
+				when '1A' then 'emma.liu@shanghaimart.com'
+				end) as email,
+			(case e.xf_status
+				when '13' then '张冬梅'
+				when '14' then '嵇春兰'
+				when '16' then '丁峰 龚丽锋 陶云崖'
+				when '19' then '江寅 顾为 张颉'
+				when '18' then '庄叶'
+				when '1A' then '刘英'
+				end) as operator,
+			--staff.name as 合同创建人,
+			--b.displayname as 退租创建人, 
+			--a.serialnum as 退租流程号, 
+			l.UnitList as units,
+			d.leaseno as leaseNumber, 
+			convert(varchar(10),a.CreateAt,120) as startRetireTime, 
+			case when a.state='Running' then '审批中' else '已审批' end as originalStatus, 
+			isnull(convert(varchar(10),a.finishat,120),'') as originalPassTime 
+			from SERVER18.BPMDB.dbo.BPMInstTasks as a left join 
+			SERVER18.BPMDB.dbo.vad as b on a.owneraccount=b.adname left join 
+			SERVER18.BPMDB.dbo.Retire as d on a.taskid=d.taskid left join 
+			ERP.dbo.lease as l on d.leaseno = l.leasenumber left join 
+			--HR.dbo.Staff as staff on l.createby=staff.id left join 
+			OPENQUERY(KECHUAN_PROD,'select xf_contractno leasenumber,xf_status from smsc_a.view_terminal') as e on d.leaseno=e.leasenumber
+			where a.processname ='退租申请' 
+			and (
+			    a.state ='Approved' 
+			and a.finishat>=cast('2016-11-09' as datetime)
+			or  a.state='Running'    
+			   ) 
+			--and a.OwnerPosition not like '%离职人员%' 
+			and e.xf_status in ('14','16','18','19')
+			and a.finishat is not null
+			order by (case e.xf_status
+				when '13' then '张冬梅'
+				when '14' then '嵇春兰'
+				when '16' then '丁峰 龚丽锋 陶云崖'
+				when '19' then '江寅 顾为 张颉'
+				when '18' then '庄叶'
+				when '1A' then '刘英'
+				end)
+	  ]]> 
+  </select>
+</mapper>

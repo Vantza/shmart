@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
+import com.cary.cwish.pojo.RetireProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
 import com.cary.cwish.service.InvoiceService;
+import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.service.UserService;  
   
 @RunWith(SpringJUnit4ClassRunner.class)    //表示继承了SpringJUnit4ClassRunner类 
@@ -30,6 +32,9 @@ public class TestMyBatis {
     
     @Resource
     private ContractProcessPushService cpps = null;
+    
+    @Resource
+    private RetireProcessPushService rpps = null;
     
     
 //    @Test  
@@ -67,7 +72,7 @@ public class TestMyBatis {
     	logger.info("get in testGetRecordsByRequiredId");
     	List<Invoice> is = invoiceService.getRecordsByRequiredId(2007037);
     	logger.info(is.size());
-    }*/
+    }
     
     @Test
     public void testGetEmailInfo() throws Exception {
@@ -76,5 +81,11 @@ public class TestMyBatis {
     	List<ContractProcessPush> list = cpps.getContractProcessPushList();
     	
     	logger.info(list.get(0).getEmail());
+    }*/
+    
+    @Test
+    public void testGetRetireProcessPushList() {
+    	List<RetireProcessPush> list = rpps.getRetireProcessPushList();
+    	logger.info(list.size() + "----" + list.get(5).getEmail());
     }
 }  
