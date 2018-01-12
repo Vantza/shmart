@@ -143,7 +143,6 @@ function saveData() {
 		async: true,
 		data: {'saveType' : saveType},
 		success: function(result) {
-			result = eval('(' + result + ')');
 			alert('Save data successfully!!');
 		},
 		error: function () {
@@ -164,6 +163,7 @@ function sendReminderEmail() {
 		data: {'saveType' : saveType},
 		success: function(result) {
 			result = eval('(' + result + ')');
+			alert('Email sent successfully!!');
 		},
 		error: function () {
 			alert('Email sent failed!!')

@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,14 @@ import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.criteria.From;
+
+import org.springframework.beans.factory.parsing.AliasDefinition;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.cary.cwish.pojo.ContractProcessPush;
+import com.cary.cwish.pojo.RetireProcessPush;
 import com.sun.istack.internal.logging.Logger;
 
 
@@ -57,7 +62,7 @@ public class MailService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         // 设置utf-8或GBK编码，否则邮件会有乱码
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        messageHelper.setFrom(WishConstant.EMAILFORM, "科传审批提醒邮件");
+        messageHelper.setFrom(WishConstant.EMAILFORM, "科传系统提醒邮件");
         messageHelper.setTo(to);
         messageHelper.setCc(cc);
         if (attachFileName != null && attachment != null) {
@@ -181,5 +186,111 @@ public class MailService {
 		
 		return html;
 	}
+
+	
+	/**
+	 * 构建退租流程提醒邮件提醒列表 
+	 * 每个邮箱不重复出现
+	 * @param rpps
+	 * @return
+	 */
+	public static String[] buildRetireProcessPushEmailAddressOfTo(List<RetireProcessPush> rpps) {
+		List<String> emails = new ArrayList<String>();
+		for (RetireProcessPush rpp : rpps) {
+			if (rpp.getEmail() != null && rpp.getEmail().equals("工程维修部办理退租")) {
+				if (!emails.contains("feng.ding@shanghaimart.com") && !emails.contains("glf@shanghaimart.com") && !emails.contains("tyy@shanghaimart.com")) {
+					emails.add("feng.ding@shanghaimart.com");
+					emails.add("glf@shanghaimart.com");
+					emails.add("tyy@shanghaimart.com");
+				}
+			}
+			
+			if (rpp.getEmail() != null && rpp.getEmail().equals("工程弱电部办理退租")) {
+				if (!emails.contains("pete@shanghaimart.com") && !emails.contains("gw@shanghaimart.com") && !emails.contains("jean@shanghaimart.com")) {
+					emails.add("pete@shanghaimart.com");
+					emails.add("gw@shanghaimart.com");
+					emails.add("jean@shanghaimart.com");
+				}
+			}
+			
+			if (rpp.getEmail() != null && !emails.contains(rpp.getEmail()) && !rpp.getEmail().equals("工程维修部办理退租") && !rpp.getEmail().equals("工程弱电部办理退租")) {
+				emails.add(rpp.getEmail());
+			}
+		}
+		emails.add("cary.cao@shanghaimart.com");
+		String[] to = emails.toArray(new String[emails.size()]); 
+		return to;
+	}
+
+	
+	public static String buildRetireProcessPushHTML(List<RetireProcessPush> rpps) throws ParseException {
+		String html;
+		String table;
+		String accTime;
+		
+		//构建邮件文字部分
+		html = "<div style='font-size: 14px; font-family: 微软雅黑, 'Microsoft YaHei'; outline: none;'>"
+				+ "<span>各位，</span><br>"
+				+ "<p>科传要求退租在ERP中成立后的七个工作日内走完科传系统的流程审批，租约生效日期为红色的为超过期限的记录，还请优先审批超过期限记录。</p><br>"
+				+ "<p>谢谢配合! </p>";
+		
+		//构建邮件表格部分
+		table = "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center'>"
+				+ "<colgroup><col width='196'>"
+				+ "<col width='70'>"
+				+ "<col width='140'>"
+				+ "<col width='80'>"
+				+ "<col width='75'>"
+				+ "<col width='80'>"
+				+ "<col width='100'></colgroup>"
+				+ "<tbody><tr height='25'><td><strong>科传系统审批环节</strong></td>"
+				+ "<td><strong>审批环节操作人</strong></td>"
+				+ "<td><strong>单元号</strong></td>"
+				+ "<td><strong>合同编号</strong></td>"
+				+ "<td><strong>原系统流程状态</strong></td>"
+				+ "<td><strong>原系统流程审批通过日期</strong></td></tr>";
+		
+		for (RetireProcessPush rpp : rpps ) {
+			long diff;
+			long days = 0;
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date d1 = df.parse(rpp.getOriginalPassTime());     
+			Date d2 = new Date();     
+			diff = d2.getTime() - d1.getTime();     
+			days = diff / (1000 * 60 * 60 * 24);
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(d2);
+			
+			//排除双休日
+			if (calendar.DAY_OF_WEEK < 2) {
+				if (days > 10) {
+					accTime = "<td style='color: red'>";
+				} else {
+					accTime = "<td>";
+				}
+			} else {
+				if (days > 8) {
+					accTime = "<td style='color: red'>";
+				} else {
+					accTime = "<td>";
+				}
+			}
+			
+						
+			table = table + "<tr height='25'><td>" + rpp.getProcessPoint() + "</td>"
+					+ "<td>" + rpp.getOperator() + "</td>"
+					+ "<td>" + rpp.getUnits() + "</td>"
+					+ "<td>" + rpp.getLeaseNumber() + "</td>"
+					+ "<td>" + rpp.getOriginalStatus() + "</td>"
+					+ accTime + rpp.getOriginalPassTime() + "</td></tr>";
+		}
+		
+		table = table + "</tbody></table><br>";
+		html = html + table;
+		
+		return html;
+	}
+	
 }
 	

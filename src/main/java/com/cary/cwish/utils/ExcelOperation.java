@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
+import com.cary.cwish.pojo.RetireProcessPush;
 
 public class ExcelOperation {
 	private static Logger logger = Logger.getLogger(ExcelOperation.class);
@@ -213,4 +214,49 @@ public class ExcelOperation {
         logger.info(fileName + " written successfully");
 	}
 	
+	
+	/**
+	 * write information of RetireProcess to excel file
+	 * @param fileName
+	 * @param rpps
+	 * @throws Exception
+	 */
+	public void writeListOfRetireProcessToExcel(String fileName, List<RetireProcessPush> rpps) throws Exception {
+		Workbook workbook = null;
+		logger.info("rpps' size : " + rpps.size());
+		if (fileName.endsWith("xlsx")) {
+            workbook = new XSSFWorkbook();
+        } else if (fileName.endsWith("xls")) {
+            workbook = new HSSFWorkbook();
+        } else {
+            throw new Exception("invalid file name, should be xls or xlsx");
+        }
+		
+		Sheet sheet = workbook.createSheet("RetireProcess");
+		Row header = sheet.createRow(0);
+		header.createCell(0).setCellValue("科传系统审批环节");
+		header.createCell(1).setCellValue("审批环节操作人");
+		header.createCell(2).setCellValue("单元号");
+		header.createCell(3).setCellValue("合同编号");
+		header.createCell(4).setCellValue("退租创建日期");
+		header.createCell(5).setCellValue("原系统流程状态");
+		header.createCell(6).setCellValue("原系统流程审批通过日期");
+		
+		int rowIndex = 1;
+		for (RetireProcessPush rpp : rpps) {
+			Row row = sheet.createRow(rowIndex++);
+			row.createCell(0).setCellValue(rpp.getProcessPoint());
+			row.createCell(1).setCellValue(rpp.getOperator());
+			row.createCell(2).setCellValue(rpp.getUnits());
+			row.createCell(3).setCellValue(rpp.getLeaseNumber());
+			row.createCell(4).setCellValue(rpp.getStartRetireTime());	
+			row.createCell(5).setCellValue(rpp.getOriginalStatus());
+			row.createCell(6).setCellValue(rpp.getOriginalPassTime());
+		}
+		
+		FileOutputStream fos = new FileOutputStream(fileName);
+        workbook.write(fos);
+        fos.close();
+        logger.info(fileName + " written successfully");
+	}
 }
