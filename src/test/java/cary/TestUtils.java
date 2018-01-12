@@ -83,7 +83,7 @@ public class TestUtils {
 	@Test
 	public void testBuildContractProcessPushEmailAddressOfTo() throws Exception {
 		String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps.getContractProcessPushList());
-		for (int i=0;i<toString().length();i++) {
+		for (int i=0;i<to.length;i++) {
 			System.out.println(to[i]);
 		}
 	}
