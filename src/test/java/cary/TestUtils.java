@@ -32,52 +32,59 @@ public class TestUtils {
 	@Resource
 	private RetireProcessPushService rpps = null;
 	
-//	@Test
-//	public void testWriteListOfContractProcessToExcel() throws Exception {
-//		ExcelOperation eo = new ExcelOperation();
-//		List<ContractProcessPush> list = cpps.getContractProcessPushList();
-//		eo.writeListOfContractProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", list);
-//	}
 	
-//	@Test
-//	public void testMailService() throws Exception {
-//		MailService.createMailSender();
-//		logger.info("...");
-//		String[] to = {"544082780@qq.com"};
-//		String[] cc = {"cary.cao@shanghaimart.com"};
-//		File file = new File("C:/Users/cary.cao/Desktop/cycycy.xls");  
-//		List<ContractProcessPush> list = cpps.getContractProcessPushList();
-//		String html = MailService.buildContractProcessPushHTML(list);
-//        String fileNm = file.getName();
-//		MailService.sendHtmlMail(to, cc, fileNm, file, "test email", html);
-//	}
-	
-//	@Test
-//	public void testBuildContractProcessPushHTML() throws Exception {
-//		List<ContractProcessPush> list = cpps.getContractProcessPushList();
-//		String html = MailService.buildContractProcessPushHTML(list);
-//		logger.info(html);
-//	}
+	public void testWriteListOfContractProcessToExcel() throws Exception {
+		ExcelOperation eo = new ExcelOperation();
+		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+		eo.writeListOfContractProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", list);
+	}
 	
 	
-//	@Test
-//	public void testWriteListOfRetireProcessToExcel() throws Exception {
-//		ExcelOperation eo = new ExcelOperation();
-//		eo.writeListOfRetireProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", rpps.getRetireProcessPushList());
-//	}
-	
-//	@Test
-//	public void testBuildRetireProcessPushEmailAddressOfTo() throws Exception {
-//		String[] to = MailService.buildRetireProcessPushEmailAddressOfTo(rpps.getRetireProcessPushList());
-//		for (int i=0;i<to.length;i++) {
-//			System.out.println(to[i]);
-//		}	
-//	}
+	public void testMailService() throws Exception {
+		MailService.createMailSender();
+		logger.info("...");
+		String[] to = {"544082780@qq.com"};
+		String[] cc = {"cary.cao@shanghaimart.com"};
+		File file = new File("C:/Users/cary.cao/Desktop/cycycy.xls");  
+		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+		String html = MailService.buildContractProcessPushHTML(list);
+        String fileNm = file.getName();
+		MailService.sendHtmlMail(to, cc, fileNm, file, "test email", html);
+	}
 	
 	
-	@Test
+	public void testBuildContractProcessPushHTML() throws Exception {
+		List<ContractProcessPush> list = cpps.getContractProcessPushList();
+		String html = MailService.buildContractProcessPushHTML(list);
+		logger.info(html);
+	}
+	
+	
+	
+	public void testWriteListOfRetireProcessToExcel() throws Exception {
+		ExcelOperation eo = new ExcelOperation();
+		eo.writeListOfRetireProcessToExcel("C:/Users/cary.cao/Desktop/cycycy.xls", rpps.getRetireProcessPushList());
+	}
+	
+	
+	public void testBuildRetireProcessPushEmailAddressOfTo() throws Exception {
+		String[] to = MailService.buildRetireProcessPushEmailAddressOfTo(rpps.getRetireProcessPushList());
+		for (int i=0;i<to.length;i++) {
+			System.out.println(to[i]);
+		}	
+	}
+	
+	
 	public void testBuildRetireProcessPushHTML() throws ParseException {
 		System.out.println(MailService.buildRetireProcessPushHTML(rpps.getRetireProcessPushList()));
 	}
 	
+	
+	@Test
+	public void testBuildContractProcessPushEmailAddressOfTo() throws Exception {
+		String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps.getContractProcessPushList());
+		for (int i=0;i<toString().length();i++) {
+			System.out.println(to[i]);
+		}
+	}
 }

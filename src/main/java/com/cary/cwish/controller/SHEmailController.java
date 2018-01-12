@@ -1,9 +1,7 @@
 package com.cary.cwish.controller;
 
 import java.io.File;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.formula.functions.Now;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +22,6 @@ import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.utils.ExcelOperation;
 import com.cary.cwish.utils.MailService;
 import com.cary.cwish.utils.WishConstant;
-import com.sun.org.apache.xpath.internal.operations.And;
 
 @Controller
 @RequestMapping("/SHEmail")
@@ -142,6 +138,8 @@ public class SHEmailController {
 		fileName = df.format(day);
 		logger.info("现在时间是 ： " +  df.format(day));
 		
+		
+		//发送签约流程提醒邮件
 		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("contractProcess")) {
 			logger.info("start to save contract process info");			
 			
@@ -162,10 +160,11 @@ public class SHEmailController {
 			logger.info("start to send contract process info emails");
 			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
 			logger.info("contract process info emails sent successfully!!");
-			jsonObject.put("saveStatus", "success");
+			jsonObject.put("emailStatus", "success");
 			res.getWriter().write(jsonObject.toString());
 		}
 		
+		//发送退租流程提醒邮件
 		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("retireProcess")) {
 			logger.info("start to save retire process info");			
 			
@@ -186,7 +185,7 @@ public class SHEmailController {
 			logger.info("start to send retire process info emails");
 			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
 			logger.info("retire process info emails sent successfully!!");
-			jsonObject.put("saveStatus", "success");
+			jsonObject.put("emailStatus", "success");
 			res.getWriter().write(jsonObject.toString());
 		}
 		

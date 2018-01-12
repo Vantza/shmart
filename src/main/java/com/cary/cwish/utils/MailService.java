@@ -79,12 +79,16 @@ public class MailService {
 	 * @return
 	 */
 	public static String[] buildContractProcessPushEmailAddressOfTo(List<ContractProcessPush> cpps) {
-		int size = cpps.size();
-		String[] to = new String[size+1];
-		for (int i=0; i<size; i++) {
-			to[i] = cpps.get(i).getEmail();
+		List<String> emails = new ArrayList<String>();
+		for (ContractProcessPush cpp : cpps) {
+			if (cpp.getEmail()!=null && !emails.contains(cpp.getEmail())) {
+				emails.add(cpp.getEmail());
+			}
 		}
-		to[size] = "cary.cao@shanghaimart.com";
+		emails.add("cary.cao@shanghaimart.com");
+		
+		String[] to = emails.toArray(new String[emails.size()]);
+		
 		return to;
 	}
 	
@@ -222,7 +226,12 @@ public class MailService {
 		return to;
 	}
 
-	
+	/**
+	 * 构建退租提醒邮件内容部分
+	 * @param rpps
+	 * @return
+	 * @throws ParseException
+	 */
 	public static String buildRetireProcessPushHTML(List<RetireProcessPush> rpps) throws ParseException {
 		String html;
 		String table;
