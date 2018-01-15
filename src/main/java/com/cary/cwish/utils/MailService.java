@@ -85,7 +85,6 @@ public class MailService {
 				emails.add(cpp.getEmail());
 			}
 		}
-		emails.add("cary.cao@shanghaimart.com");
 		
 		String[] to = emails.toArray(new String[emails.size()]);
 		
@@ -246,12 +245,11 @@ public class MailService {
 		//构建邮件表格部分
 		table = "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center'>"
 				+ "<colgroup><col width='196'>"
-				+ "<col width='70'>"
+				+ "<col width='120'>"
 				+ "<col width='140'>"
 				+ "<col width='80'>"
-				+ "<col width='75'>"
-				+ "<col width='80'>"
-				+ "<col width='100'></colgroup>"
+				+ "<col width='105'>"
+				+ "<col width='180'></colgroup>"
 				+ "<tbody><tr height='25'><td><strong>科传系统审批环节</strong></td>"
 				+ "<td><strong>审批环节操作人</strong></td>"
 				+ "<td><strong>单元号</strong></td>"

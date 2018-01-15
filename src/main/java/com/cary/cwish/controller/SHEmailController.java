@@ -149,10 +149,10 @@ public class SHEmailController {
 			
 			//send emails 
 			MailService.createMailSender();
-			//String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps);
-			String[] to = {"cary.cao@shanghaimart.com"};
-			//String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
-			String[] cc = {"544082780@qq.com"};
+			String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps);
+			//String[] to = {"cary.cao@shanghaimart.com"};
+			String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			//String[] cc = {"544082780@qq.com"};
 			File attachment = new File(fileName);
 			String attachFileName = attachment.getName();
 			String subject = "签约流程审批提醒 - 7个工作日     " + df.format(day);
@@ -168,16 +168,16 @@ public class SHEmailController {
 		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("retireProcess")) {
 			logger.info("start to save retire process info");			
 			
-			fileName = WishConstant.SAVE_FOLDER + "rpps/签约流程" + fileName + ".xls";
+			fileName = WishConstant.SAVE_FOLDER + "rpps/退租流程" + fileName + ".xls";
 			rpps = retireProcessPushService.getRetireProcessPushList();
 			eo.writeListOfRetireProcessToExcel(fileName, rpps);
 			
 			//send emails 
 			MailService.createMailSender();
-			//String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps);
-			String[] to = {"cary.cao@shanghaimart.com"};
-			//String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
-			String[] cc = {"544082780@qq.com"};
+			String[] to = MailService.buildRetireProcessPushEmailAddressOfTo(rpps);
+			//String[] to = {"cary.cao@shanghaimart.com"};
+			String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			//String[] cc = {"544082780@qq.com"};
 			File attachment = new File(fileName);
 			String attachFileName = attachment.getName();
 			String subject = "退租流程审批提醒 - 7个工作日     " + df.format(day);
