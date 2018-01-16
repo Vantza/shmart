@@ -22,6 +22,8 @@ function showData() {
 				buildRetireProcessPushTable(result.RetireProcessPushList);
 			} else if ($('#selectForm')[0].value == 'modifyContract') {
 				buildModifyContractPushTable(result.ModifyContractPushList);
+			} else if ($('#selectForm')[0].value == 'retireStart') {
+				buildRetireStartPushTable(result.RetireStartPushList);
 			}
 			
 		},
@@ -176,6 +178,48 @@ function buildModifyContractPushTable(ModifyContractPushList) {
 		row['rentValue'] = ModifyContractPushList[i].rentValue;
 		row['rentType'] = ModifyContractPushList[i].rentType;
 		row['accepttime'] = ModifyContractPushList[i].accepttime;
+		data.push(row);
+	}
+
+	$('#table').bootstrapTable('destroy').bootstrapTable({
+        columns: columns,
+        data: data
+    });
+}
+
+function buildRetireStartPushTable(RetireStartPushList) {
+	var columns = [],
+	data = [],
+	row;
+	
+	columns.push({
+		field: 'creator',
+        title: '退租创建人'
+	}, {
+		field: 'units',
+        title: '单元号'
+	}, {
+		field: 'leaseNumber',
+        title: '合同编号'
+	}, {
+		field: 'createAt',
+        title: '退租创建日期'
+	}, {
+		field: 'status',
+        title: '原系统流程状态'
+	}, {
+		field: 'passTime',
+        title: '原系统流程审批通过日期'
+	});
+	
+	for (var i=0; i<RetireStartPushList.length; i++) {
+		row = {}
+		row['creator'] = RetireStartPushList[i].creator;
+		row['units'] = RetireStartPushList[i].units;
+		row['leaseNumber'] = RetireStartPushList[i].leaseNumber;
+		row['createAt'] = RetireStartPushList[i].createAt;
+		row['status'] = RetireStartPushList[i].status;
+		row['passTime'] = RetireStartPushList[i].passTime;
 		data.push(row);
 	}
 

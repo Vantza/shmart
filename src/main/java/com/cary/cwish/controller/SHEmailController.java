@@ -18,9 +18,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
+import com.cary.cwish.pojo.RetireStartPush;
 import com.cary.cwish.service.ContractProcessPushService;
 import com.cary.cwish.service.ModifyCotractPushService;
 import com.cary.cwish.service.RetireProcessPushService;
+import com.cary.cwish.service.RetireStartPushService;
 import com.cary.cwish.utils.ExcelOperation;
 import com.cary.cwish.utils.MailService;
 import com.cary.cwish.utils.WishConstant;
@@ -39,6 +41,9 @@ public class SHEmailController {
 	
 	@Resource
 	ModifyCotractPushService modifyCotractPushService;
+	
+	@Resource
+	RetireStartPushService retireStartPushService;
 	
 	@RequestMapping(value= "/")
 	public ModelAndView getReimbursementRecords(HttpServletRequest request) {
@@ -59,6 +64,7 @@ public class SHEmailController {
 		List<ContractProcessPush> cpps;
 		List<RetireProcessPush> rpps;
 		List<ModifyContractPush> mcps;
+		List<RetireStartPush> rsps;
 		JSONObject jsonObject = new JSONObject();
 		
 		logger.info("SearchType is : " + req.getParameter("SearchType"));
@@ -79,6 +85,12 @@ public class SHEmailController {
 			logger.info("get into list modify contract records page");
 			mcps = modifyCotractPushService.getModifyContractPushList();
 			jsonObject.put("ModifyContractPushList", mcps);
+		}
+		
+		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("retireStart")) {
+			logger.info("get into list retire start records page");
+			rsps = retireStartPushService.getRetireStartPushServiceList();
+			jsonObject.put("RetireStartPushList", rsps);
 		}
 		
 		res.getWriter().write(jsonObject.toString());
