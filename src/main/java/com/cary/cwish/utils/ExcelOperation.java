@@ -17,6 +17,7 @@ import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
 import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
+import com.cary.cwish.pojo.RetireStartPush;
 
 public class ExcelOperation {
 	private static Logger logger = Logger.getLogger(ExcelOperation.class);
@@ -309,4 +310,46 @@ public class ExcelOperation {
         logger.info(fileName + " written successfully");
 	}
 
+	/**
+	 * write information of RetireStart to excel file
+	 * @param fileName
+	 * @param rsps
+	 * @throws Exception
+	 */
+	public void writeListOfRetireStartToExcel(String fileName, List<RetireStartPush> rsps) throws Exception {
+		Workbook workbook = null;
+		logger.info("rsps' size : " + rsps.size());
+		if (fileName.endsWith("xlsx")) {
+            workbook = new XSSFWorkbook();
+        } else if (fileName.endsWith("xls")) {
+            workbook = new HSSFWorkbook();
+        } else {
+            throw new Exception("invalid file name, should be xls or xlsx");
+        }
+		
+		Sheet sheet = workbook.createSheet("RetireStart");
+		Row header = sheet.createRow(0);
+		header.createCell(0).setCellValue("退租创建人");
+		header.createCell(1).setCellValue("单元号");
+		header.createCell(2).setCellValue("合同编号");
+		header.createCell(3).setCellValue("退租创建日期");
+		header.createCell(4).setCellValue("原系统流程状态");
+		header.createCell(5).setCellValue("原系统流程审批通过日期");
+		
+		int rowIndex = 1;
+		for (RetireStartPush rsp : rsps) {
+			Row row = sheet.createRow(rowIndex++);
+			row.createCell(0).setCellValue(rsp.getCreator());
+			row.createCell(1).setCellValue(rsp.getUnits());
+			row.createCell(2).setCellValue(rsp.getLeaseNumber());
+			row.createCell(3).setCellValue(rsp.getCreateAt());
+			row.createCell(4).setCellValue(rsp.getStatus());	
+			row.createCell(5).setCellValue(rsp.getPassTime());
+		}
+		
+		FileOutputStream fos = new FileOutputStream(fileName);
+        workbook.write(fos);
+        fos.close();
+        logger.info(fileName + " written successfully");
+	}
 }
