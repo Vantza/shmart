@@ -25,6 +25,8 @@
               	<select id = "selectForm" class="form-control" style="width: auto;">
 				  <option value ="contractProcess">科传签约流程</option>
 				  <option value ="retireProcess">科传退租流程</option>
+				  <option value ="modifyContract">科传签约流程未提交</option>
+				  <option value ="retireStart">科传退租流程未提交</option>
 				</select>
                	<button class="btn btn-default" type="button" onclick='showData()'>查询!</button>
                	<button class="btn btn-primary" type="button" onclick='saveData()'>保存至本地!</button>

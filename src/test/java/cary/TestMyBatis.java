@@ -97,7 +97,7 @@ public class TestMyBatis {
     @Test
     public void testGetModifyContractPushList() {
     	List<ModifyContractPush> list = mcps.getModifyContractPushList();
-    	logger.info(list.size() + "----" + list.get(list.size()-1).getEmail());
+    	logger.info(list.size() + "----" + list.get(list.size()-1).getOperator());
     }
     
 }  

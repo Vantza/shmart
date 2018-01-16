@@ -16,8 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cary.cwish.pojo.ContractProcessPush;
+import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
+import com.cary.cwish.service.ModifyCotractPushService;
 import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.utils.ExcelOperation;
 import com.cary.cwish.utils.MailService;
@@ -34,6 +36,9 @@ public class SHEmailController {
 	
 	@Resource
 	RetireProcessPushService retireProcessPushService;
+	
+	@Resource
+	ModifyCotractPushService modifyCotractPushService;
 	
 	@RequestMapping(value= "/")
 	public ModelAndView getReimbursementRecords(HttpServletRequest request) {
@@ -53,6 +58,7 @@ public class SHEmailController {
 		res.setCharacterEncoding("UTF-8");
 		List<ContractProcessPush> cpps;
 		List<RetireProcessPush> rpps;
+		List<ModifyContractPush> mcps;
 		JSONObject jsonObject = new JSONObject();
 		
 		logger.info("SearchType is : " + req.getParameter("SearchType"));
@@ -63,10 +69,16 @@ public class SHEmailController {
 			jsonObject.put("ContractProcessPushList", cpps);
 		}
 		
-		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("retireProcess")){
+		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("retireProcess")) {
 			logger.info("get into list retire process records page");
 			rpps = retireProcessPushService.getRetireProcessPushList();
 			jsonObject.put("RetireProcessPushList", rpps);
+		}
+		
+		if (req.getParameter("SearchType")!= null && req.getParameter("SearchType").equals("modifyContract")) {
+			logger.info("get into list modify contract records page");
+			mcps = modifyCotractPushService.getModifyContractPushList();
+			jsonObject.put("ModifyContractPushList", mcps);
 		}
 		
 		res.getWriter().write(jsonObject.toString());

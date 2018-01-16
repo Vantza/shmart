@@ -20,6 +20,8 @@ function showData() {
 				buildContractProcessPushTable(result.ContractProcessPushList);
 			} else if ($('#selectForm')[0].value == 'retireProcess') {
 				buildRetireProcessPushTable(result.RetireProcessPushList);
+			} else if ($('#selectForm')[0].value == 'modifyContract') {
+				buildModifyContractPushTable(result.ModifyContractPushList);
 			}
 			
 		},
@@ -131,6 +133,57 @@ function buildRetireProcessPushTable(RetireProcessPushList) {
 	
 }
 
+
+//构造签约流程未提交列表
+function buildModifyContractPushTable(ModifyContractPushList) {
+	var columns = [],
+	data = [],
+	row;
+	
+	columns.push({
+		field: 'operator',
+        title: '科传待审批人'
+	}, {
+		field: 'creator',
+        title: '合同创建人'
+	}, {
+		field: 'leaseNumber',
+        title: '合同编号'
+	}, {
+		field: 'bpmsn',
+        title: '签约流程号'
+	}, {
+		field: 'proValue',
+        title: '审批状态'
+	}, {
+		field: 'rentValue',
+        title: '租赁状态'
+	}, {
+		field: 'rentType',
+        title: '租约类型'
+	}, {
+		field: 'accepttime',
+		title: '原系统租约生效日期'
+	});
+	
+	for (var i=0; i<ModifyContractPushList.length; i++) {
+		row = {}
+		row['operator'] = ModifyContractPushList[i].operator;
+		row['creator'] = ModifyContractPushList[i].creator;
+		row['leaseNumber'] = ModifyContractPushList[i].leaseNumber;
+		row['bpmsn'] = ModifyContractPushList[i].bpmsn;
+		row['proValue'] = ModifyContractPushList[i].proValue;
+		row['rentValue'] = ModifyContractPushList[i].rentValue;
+		row['rentType'] = ModifyContractPushList[i].rentType;
+		row['accepttime'] = ModifyContractPushList[i].accepttime;
+		data.push(row);
+	}
+
+	$('#table').bootstrapTable('destroy').bootstrapTable({
+        columns: columns,
+        data: data
+    });
+}
 
 
 //保存选择的流程信息至EXCEL文件
