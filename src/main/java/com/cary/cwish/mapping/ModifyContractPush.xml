@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cary.cwish.dao.ModifyContractPushDao" >
+  <resultMap id="BaseResultMap" type="com.cary.cwish.pojo.ModifyContractPush" >
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="leaseNumber" property="leaseNumber" jdbcType="VARCHAR" />
+    <result column="bpmsn" property="bpmsn" jdbcType="VARCHAR" />
+    <result column="proValue" property="proValue" jdbcType="VARCHAR" />
+    <result column="rentValue" property="rentValue" jdbcType="VARCHAR" />
+    <result column="rentType" property="rentType" jdbcType="VARCHAR" />
+    <result column="accepttime" property="accepttime" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectModifyContractPush" resultMap="BaseResultMap" >
+	  <![CDATA[  
+	    	select distinct
+			--f.xf_status,
+				(case f.xf_status
+					when '10' then '处于新建状态未提交'
+					when '20' then '被退回后未提交'
+					when '24' then '法务部审批-张兴凤'
+					when '26' then '财务部审批-张冬梅'
+					when '2P' then '财务部审核保证金-王红玉'
+					end) as operator,
+			hr.email as 'email',
+			hr.lastname as creator, 
+			a.leasenumber as leaseNumber, 
+			isnull(a.bpmsn,'') as bpmsn, 
+			b.value as proValue, 
+			d.value as rentValue, 
+			e.value as rentType,  
+			isnull(convert(varchar(10),a.accepttime,120),'') as accepttime    
+			from ERP.dbo.lease as a left join 
+			ERP.dbo.sysparameter as b on a.rowstatusguid=b.guid left join 
+			ERP.dbo.sysparameter as d on a.rentstatusguid=d.guid left join 
+			ERP.dbo.sysparameter as e on a.leasetypeguid=e.guid left join 
+			ERP.dbo.customer as r on a.customerguid=r.guid left join 
+			OPENQUERY(KECHUAN_PROD,'select xf_contractno leasenumber,xf_status,xf_createby creator from smsc_a.VIEW_CONTRACTMASTER') as f on a.leasenumber=f.leasenumber left join
+			openquery(SERVER33,'select loginid,lastname,email from ecology8.dbo.hrmresource') as hr on f.creator=hr.loginid
+			where isnull(b.value,'nnn')<>'草稿'
+			and a.isdeleted=0 
+			and f.XF_STATUS in ('20','10')
+			and a.accepttime is not null
+	  ]]> 
+  </select>
+</mapper>

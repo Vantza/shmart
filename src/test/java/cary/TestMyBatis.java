@@ -13,9 +13,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
+import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
 import com.cary.cwish.service.InvoiceService;
+import com.cary.cwish.service.ModifyCotractPushService;
 import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.service.UserService;  
   
@@ -35,6 +37,9 @@ public class TestMyBatis {
     
     @Resource
     private RetireProcessPushService rpps = null;
+    
+    @Resource
+    private ModifyCotractPushService mcps = null;
     
     
 //    @Test  
@@ -83,9 +88,16 @@ public class TestMyBatis {
     	logger.info(list.get(0).getEmail());
     }*/
     
-    @Test
+    
     public void testGetRetireProcessPushList() {
     	List<RetireProcessPush> list = rpps.getRetireProcessPushList();
-    	logger.info(list.size() + "----" + list.get(5).getEmail());
+    	logger.info(list.size() + "----" + list.get(list.size()).getEmail());
     }
+    
+    @Test
+    public void testGetModifyContractPushList() {
+    	List<ModifyContractPush> list = mcps.getModifyContractPushList();
+    	logger.info(list.size() + "----" + list.get(list.size()-1).getEmail());
+    }
+    
 }  
