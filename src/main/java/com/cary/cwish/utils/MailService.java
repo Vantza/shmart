@@ -20,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.cary.cwish.pojo.ContractProcessPush;
+import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
 import com.sun.istack.internal.logging.Logger;
 
@@ -299,5 +300,68 @@ public class MailService {
 		return html;
 	}
 	
+	/**
+	 * 构建签约流程未提交邮件发送人列表
+	 * @param mcps
+	 * @return
+	 */
+	public static String[] buildModifyContractPushEmailAddressOfTo(List<ModifyContractPush> mcps) {
+		List<String> emails = new ArrayList<String>();
+		for (ModifyContractPush mcp : mcps) {
+			if (mcp.getEmail()!=null && !emails.contains(mcp.getEmail())) {
+				emails.add(mcp.getEmail());
+			}
+		}
+		
+		String[] to = emails.toArray(new String[emails.size()]);
+		
+		return to;
+	}
+
+ 
+	public static String buildModifyContractPushHTML(List<ModifyContractPush> mcps) throws ParseException {
+		String html;
+		String table;
+		
+		//构建邮件文字部分
+		html = "<div style='font-size: 14px; font-family: 微软雅黑, 'Microsoft YaHei'; outline: none;'>"
+				+ "<span>各位，</span><br>"
+				+ "<p>以下合同为原ERP系统中已成立，而科传系统中处于修改状态（被退回）的合同，还请各位根据审批人退回原因进行修改并重新提交，如有问题，请随时联系，谢谢。</p><br>";
+		
+		//构建邮件表格部分
+		table = "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center'>"
+				+ "<colgroup><col width='196'>"
+				+ "<col width='120'>"
+				+ "<col width='140'>"
+				+ "<col width='80'>"
+				+ "<col width='105'>"
+				+ "<col width='105'>"
+				+ "<col width='105'>"
+				+ "<col width='180'></colgroup>"
+				+ "<tbody><tr height='25'><td><strong>科传系统合同状态</strong></td>"
+				+ "<td><strong>创建人</strong></td>"
+				+ "<td><strong>合同编号</strong></td>"
+				+ "<td><strong>签约流程号</strong></td>"
+				+ "<td><strong>审批状态</strong></td>"
+				+ "<td><strong>租赁状态</strong></td>"
+				+ "<td><strong>租约类型</strong></td>"
+				+ "<td><strong>原系统租约生效日期</strong></td></tr>";
+		
+		for (ModifyContractPush mcp : mcps) {			
+			table = table + "<tr height='25'><td>" + mcp.getOperator() + "</td>"
+					+ "<td>" + mcp.getCreator() + "</td>"
+					+ "<td>" + mcp.getLeaseNumber() + "</td>"
+					+ "<td>" + mcp.getBpmsn() + "</td>"
+					+ "<td>" + mcp.getProValue() + "</td>"
+					+ "<td>" + mcp.getRentValue() + "</td>"
+					+ "<td>" + mcp.getRentType() + "</td>"
+					+ "<td>" + mcp.getAccepttime() + "</tr>";
+		}
+		
+		table = table + "</tbody></table><br>";
+		html = html + table;
+		
+		return html;
+	}
 }
 	

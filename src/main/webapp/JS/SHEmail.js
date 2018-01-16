@@ -142,7 +142,7 @@ function buildModifyContractPushTable(ModifyContractPushList) {
 	
 	columns.push({
 		field: 'operator',
-        title: '科传待审批人'
+        title: '科传系统合同状态'
 	}, {
 		field: 'creator',
         title: '合同创建人'

@@ -153,6 +153,7 @@ public class SHEmailController {
 		logger.info("SaveType is : " + req.getParameter("saveType"));
 		List<ContractProcessPush> cpps;
 		List<RetireProcessPush> rpps;
+		List<ModifyContractPush> mcps;
 		ExcelOperation eo = new ExcelOperation();
 		String fileName = null;
 		Date day=new Date();    
@@ -204,6 +205,31 @@ public class SHEmailController {
 			String attachFileName = attachment.getName();
 			String subject = "退租流程审批提醒 - 7个工作日     " + df.format(day);
 			String html = MailService.buildRetireProcessPushHTML(rpps);
+			logger.info("start to send retire process info emails");
+			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
+			logger.info("retire process info emails sent successfully!!");
+			jsonObject.put("emailStatus", "success");
+			res.getWriter().write(jsonObject.toString());
+		}
+		
+		//发送签约申请未提交提醒邮件
+		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("modifyContract")) {
+			logger.info("start to save modify contract info");			
+			
+			fileName = WishConstant.SAVE_FOLDER + "mcps/签约流程未提交" + fileName + ".xls";
+			mcps = modifyCotractPushService.getModifyContractPushList();
+			eo.writeListOfModifyContractToExcel(fileName, mcps);
+			
+			//send emails 
+			MailService.createMailSender();
+			//String[] to = MailService.buildModifyContractPushEmailAddressOfTo(mcps);
+			String[] to = {"cary.cao@shanghaimart.com"};
+			//String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			String[] cc = {"544082780@qq.com"};
+			File attachment = new File(fileName);
+			String attachFileName = attachment.getName();
+			String subject = "签约流程未提交合同" + df.format(day);
+			String html = MailService.buildModifyContractPushHTML(mcps);
 			logger.info("start to send retire process info emails");
 			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
 			logger.info("retire process info emails sent successfully!!");

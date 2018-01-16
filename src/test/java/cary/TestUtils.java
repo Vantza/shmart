@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.service.ContractProcessPushService;
+import com.cary.cwish.service.ModifyCotractPushService;
 import com.cary.cwish.service.RetireProcessPushService;
 import com.cary.cwish.utils.ExcelOperation;
 import com.cary.cwish.utils.MailService;
@@ -31,6 +32,9 @@ public class TestUtils {
 	
 	@Resource
 	private RetireProcessPushService rpps = null;
+	
+	@Resource
+	private ModifyCotractPushService mcps = null;
 	
 	
 	public void testWriteListOfContractProcessToExcel() throws Exception {
@@ -80,9 +84,17 @@ public class TestUtils {
 	}
 	
 	
-	@Test
+	
 	public void testBuildContractProcessPushEmailAddressOfTo() throws Exception {
 		String[] to = MailService.buildContractProcessPushEmailAddressOfTo(cpps.getContractProcessPushList());
+		for (int i=0;i<to.length;i++) {
+			System.out.println(to[i]);
+		}
+	}
+	
+	@Test
+	public void testBuildModifyContractPushEmailAddressOfTo() throws Exception {
+		String[] to = MailService.buildModifyContractPushEmailAddressOfTo(mcps.getModifyContractPushList());
 		for (int i=0;i<to.length;i++) {
 			System.out.println(to[i]);
 		}
