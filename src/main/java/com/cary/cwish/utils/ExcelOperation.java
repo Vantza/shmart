@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.Invoice;
+import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
 
 public class ExcelOperation {
@@ -259,4 +260,53 @@ public class ExcelOperation {
         fos.close();
         logger.info(fileName + " written successfully");
 	}
+
+	
+	/**
+	 * write information of ModifyContract to excel file
+	 * @param fileName
+	 * @param mcps
+	 * @throws Exception
+	 */
+	public void writeListOfModifyContractToExcel(String fileName, List<ModifyContractPush> mcps) throws Exception {
+		Workbook workbook = null;
+		logger.info("mcps' size : " + mcps.size());
+		if (fileName.endsWith("xlsx")) {
+            workbook = new XSSFWorkbook();
+        } else if (fileName.endsWith("xls")) {
+            workbook = new HSSFWorkbook();
+        } else {
+            throw new Exception("invalid file name, should be xls or xlsx");
+        }
+		
+		Sheet sheet = workbook.createSheet("ModifyContract");
+		Row header = sheet.createRow(0);
+		header.createCell(0).setCellValue("科传系统合同状态");
+		header.createCell(1).setCellValue("创建人");
+		header.createCell(2).setCellValue("合同编号");
+		header.createCell(3).setCellValue("签约流程号");
+		header.createCell(4).setCellValue("审批状态");
+		header.createCell(5).setCellValue("租赁状态");
+		header.createCell(6).setCellValue("租约类型");
+		header.createCell(7).setCellValue("原系统租约生效日期");
+		
+		int rowIndex = 1;
+		for (ModifyContractPush mcp : mcps) {
+			Row row = sheet.createRow(rowIndex++);
+			row.createCell(0).setCellValue(mcp.getOperator());
+			row.createCell(1).setCellValue(mcp.getCreator());
+			row.createCell(2).setCellValue(mcp.getLeaseNumber());
+			row.createCell(3).setCellValue(mcp.getBpmsn());
+			row.createCell(4).setCellValue(mcp.getProValue());	
+			row.createCell(5).setCellValue(mcp.getRentValue());
+			row.createCell(6).setCellValue(mcp.getRentType());
+			row.createCell(7).setCellValue(mcp.getAccepttime());
+		}
+		
+		FileOutputStream fos = new FileOutputStream(fileName);
+        workbook.write(fos);
+        fos.close();
+        logger.info(fileName + " written successfully");
+	}
+
 }

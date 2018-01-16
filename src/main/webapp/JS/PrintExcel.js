@@ -1,5 +1,5 @@
 $(function(){ 
-　　$.ajaxSetup({cache:false});
+	$.ajaxSetup({cache:false});
 });
 
 function printExcel() {

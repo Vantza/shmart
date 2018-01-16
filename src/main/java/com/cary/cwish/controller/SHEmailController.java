@@ -98,6 +98,7 @@ public class SHEmailController {
 		logger.info("SaveType is : " + req.getParameter("saveType"));
 		List<ContractProcessPush> cpps;
 		List<RetireProcessPush> rpps;
+		List<ModifyContractPush> mcps;
 		ExcelOperation eo = new ExcelOperation();
 		String fileName = null;
 		Date day=new Date();    
@@ -120,6 +121,15 @@ public class SHEmailController {
 			fileName = WishConstant.SAVE_FOLDER + "rpps/退租流程" + fileName + ".xls";
 			rpps = retireProcessPushService.getRetireProcessPushList();
 			eo.writeListOfRetireProcessToExcel(fileName, rpps);
+			jsonObject.put("saveStatus", "success");
+		}
+		
+		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("modifyContract")) {
+			logger.info("start to save modify contract info");
+			
+			fileName = WishConstant.SAVE_FOLDER + "mcps/签约流程未提交" + fileName + ".xls";
+			mcps = modifyCotractPushService.getModifyContractPushList();
+			eo.writeListOfModifyContractToExcel(fileName, mcps);
 			jsonObject.put("saveStatus", "success");
 		}
 		
