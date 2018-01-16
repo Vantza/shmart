@@ -92,7 +92,7 @@ public class TestUtils {
 		}
 	}
 	
-	@Test
+	
 	public void testBuildModifyContractPushEmailAddressOfTo() throws Exception {
 		String[] to = MailService.buildModifyContractPushEmailAddressOfTo(mcps.getModifyContractPushList());
 		for (int i=0;i<to.length;i++) {

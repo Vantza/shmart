@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cary.cwish.dao.RetireStartPushDao" >
+  <resultMap id="BaseResultMap" type="com.cary.cwish.pojo.RetireStartPush" >
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="units" property="units" jdbcType="VARCHAR" />
+    <result column="leaseNumber" property="leaseNumber" jdbcType="VARCHAR" />
+    <result column="createAt" property="createAt" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="passTime" property="passTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectRetireStartPush" resultMap="BaseResultMap" >
+	  <![CDATA[  
+	    	select
+			b.displayname as creator, 
+			b.Mail as email,
+			l.UnitList as units,
+			d.leaseno as leaseNumber, 
+			convert(varchar(10),a.CreateAt,120) as createAt, 
+			case when a.state='Running' then '审批中' else '已审批' end as status, 
+			isnull(convert(varchar(10),a.finishat,120),'') as passTime 
+			from SERVER18.BPMDB.dbo.BPMInstTasks as a left join 
+			SERVER18.BPMDB.dbo.vad as b on a.owneraccount=b.adname left join 
+			SERVER18.BPMDB.dbo.Retire as d on a.taskid=d.taskid left join 
+			ERP.dbo.lease as l on d.leaseno = l.leasenumber left join 
+			--HR.dbo.Staff as staff on l.createby=staff.id left join 
+			OPENQUERY(KECHUAN_PROD,'select xf_contractno leasenumber,xf_status from smsc_a.view_terminal') as e on d.leaseno=e.leasenumber
+			where a.processname ='退租申请' 
+			and (
+			    a.state ='Approved' 
+			and a.finishat>=cast('2016-11-09' as datetime)
+			or  a.state='Running'    
+			   ) 
+			and e.xf_status in ('10')
+			and a.finishat is not null
+			order by b.displayname
+	  ]]> 
+  </select>
+</mapper>
