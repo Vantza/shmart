@@ -22,6 +22,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import com.cary.cwish.pojo.ContractProcessPush;
 import com.cary.cwish.pojo.ModifyContractPush;
 import com.cary.cwish.pojo.RetireProcessPush;
+import com.cary.cwish.pojo.RetireStartPush;
 import com.sun.istack.internal.logging.Logger;
 
 
@@ -318,7 +319,12 @@ public class MailService {
 		return to;
 	}
 
- 
+	/**
+	 * 构建签约流程未提交提醒邮件内容部分
+	 * @param mcps
+	 * @return
+	 * @throws ParseException
+	 */
 	public static String buildModifyContractPushHTML(List<ModifyContractPush> mcps) throws ParseException {
 		String html;
 		String table;
@@ -363,5 +369,64 @@ public class MailService {
 		
 		return html;
 	}
+
+	/**
+	 * 构建退租流程未提交邮件发送人列表
+	 * @param rsps
+	 * @return
+	 */
+	public static String[] buildRetireStartPushEmailAddressOfTo(List<RetireStartPush> rsps) {
+		List<String> emails = new ArrayList<String>();
+		for (RetireStartPush rsp : rsps) {
+			if (rsp.getEmail()!=null && !emails.contains(rsp.getEmail())) {
+				emails.add(rsp.getEmail());
+			}
+		}
+		
+		String[] to = emails.toArray(new String[emails.size()]);
+		
+		return to;
+	}
+
+
+	public static String buildRetireStartPushHTML(List<RetireStartPush> rsps) {
+		String html;
+		String table;
+		
+		//构建邮件文字部分
+		html = "<div style='font-size: 14px; font-family: 微软雅黑, 'Microsoft YaHei'; outline: none;'>"
+				+ "<span>各位，</span><br>"
+				+ "<p>以下合同为原ERP系统中已成立，而科传系统中处于新建/修改状态的退租申请，还请各位根据审批人退回原因进行修改并重新提交，如有问题，请随时联系，谢谢。</p><br>";
+		
+		//构建邮件表格部分
+		table = "<table cellpadding='0' cellspacing='0' border='1' style='text-align: center'>"
+				+ "<colgroup><col width='196'>"
+				+ "<col width='120'>"
+				+ "<col width='120'>"
+				+ "<col width='120'>"
+				+ "<col width='105'>"
+				+ "<col width='180'></colgroup>"
+				+ "<tbody><tr height='25'><td><strong>退租创建人</strong></td>"
+				+ "<td><strong>单元号</strong></td>"
+				+ "<td><strong>合同编号</strong></td>"
+				+ "<td><strong>退租创建日期</strong></td>"
+				+ "<td><strong>原系统流程状态</strong></td>"
+				+ "<td><strong>原系统流程审批通过日期</strong></td></tr>";
+		
+		for (RetireStartPush rsp : rsps ) {			
+			table = table + "<tr height='25'><td>" + rsp.getCreator() + "</td>"
+					+ "<td>" + rsp.getUnits() + "</td>"
+					+ "<td>" + rsp.getLeaseNumber() + "</td>"
+					+ "<td>" + rsp.getCreateAt() + "</td>"
+					+ "<td>" + rsp.getStatus() + "</td>"
+					+ "<td>" + rsp.getPassTime() + "</td></tr>";
+		}
+		
+		table = table + "</tbody></table><br>";
+		html = html + table;
+		
+		return html;
+	}
+
 }
 	

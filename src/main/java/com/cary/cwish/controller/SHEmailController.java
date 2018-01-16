@@ -176,6 +176,7 @@ public class SHEmailController {
 		List<ContractProcessPush> cpps;
 		List<RetireProcessPush> rpps;
 		List<ModifyContractPush> mcps;
+		List<RetireStartPush> rsps;
 		ExcelOperation eo = new ExcelOperation();
 		String fileName = null;
 		Date day=new Date();    
@@ -244,15 +245,15 @@ public class SHEmailController {
 			
 			//send emails 
 			MailService.createMailSender();
-			//String[] to = MailService.buildModifyContractPushEmailAddressOfTo(mcps);
-			String[] to = {"cary.cao@shanghaimart.com"};
-			//String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
-			String[] cc = {"544082780@qq.com"};
+			String[] to = MailService.buildModifyContractPushEmailAddressOfTo(mcps);
+			//String[] to = {"cary.cao@shanghaimart.com"};
+			String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			//String[] cc = {"544082780@qq.com"};
 			File attachment = new File(fileName);
 			String attachFileName = attachment.getName();
 			String subject = "签约流程未提交合同" + df.format(day);
 			String html = MailService.buildModifyContractPushHTML(mcps);
-			logger.info("start to send retire process info emails");
+			logger.info("start to send modify contract info emails");
 			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
 			logger.info("retire process info emails sent successfully!!");
 			jsonObject.put("emailStatus", "success");
@@ -260,6 +261,29 @@ public class SHEmailController {
 		}
 		
 		
-		
+		//发送退租申请未提交提醒邮件
+		if (req.getParameter("saveType")!= null && req.getParameter("saveType").equals("retireStart")) {
+			logger.info("start to save retire start info");			
+			
+			fileName = WishConstant.SAVE_FOLDER + "rsps/退租流程未提交" + fileName + ".xls";
+			rsps = retireStartPushService.getRetireStartPushServiceList();
+			eo.writeListOfRetireStartToExcel(fileName, rsps);
+			
+			//send emails 
+			MailService.createMailSender();
+			String[] to = MailService.buildRetireStartPushEmailAddressOfTo(rsps);
+			//String[] to = {"cary.cao@shanghaimart.com"};
+			String[] cc = MailService.buildContractProcessPushEmailAddressOfCc();
+			//String[] cc = {"544082780@qq.com"};
+			File attachment = new File(fileName);
+			String attachFileName = attachment.getName();
+			String subject = "退租流程未提交合同" + df.format(day);
+			String html = MailService.buildRetireStartPushHTML(rsps);
+			logger.info("start to send retire start info emails");
+			MailService.sendHtmlMail(to, cc, attachFileName, attachment, subject, html);
+			logger.info("retire process info emails sent successfully!!");
+			jsonObject.put("emailStatus", "success");
+			res.getWriter().write(jsonObject.toString());
+		}
 	}
 }
